@@ -1,0 +1,119 @@
+[0m10:03:24.698535 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7805d40e5820>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7805d46fb920>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7805d39abf80>]}
+
+
+============================== 10:03:24.700886 | adf884b0-6027-45cc-972b-b653c6a3c1af ==============================
+[0m10:03:24.700886 [info ] [MainThread]: Running with dbt=1.10.13
+[0m10:03:24.701314 [debug] [MainThread]: running dbt with arguments {'version_check': 'True', 'introspect': 'True', 'log_path': 'logs', 'target_path': 'None', 'warn_error': 'None', 'cache_selected_only': 'False', 'no_print': 'None', 'indirect_selection': 'eager', 'use_colors': 'True', 'profiles_dir': '/home/armando/.dbt', 'invocation_command': 'dbt init jaffle_shop', 'partial_parse': 'True', 'write_json': 'True', 'log_cache_events': 'False', 'debug': 'False', 'quiet': 'False', 'use_experimental_parser': 'False', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'log_format': 'default', 'empty': 'None', 'static_parser': 'True', 'send_anonymous_usage_stats': 'True', 'printer_width': '80', 'fail_fast': 'False'}
+[0m10:03:24.706679 [debug] [MainThread]: Starter project path: /home/armando/ambientes_python/ambiente_koltin/lib/python3.12/site-packages/dbt/include/starter_project
+[0m10:03:24.708405 [info ] [MainThread]: 
+Your new dbt project "jaffle_shop" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m10:03:24.708843 [info ] [MainThread]: Setting up your profile.
+[0m10:03:33.191416 [error] [MainThread]: Encountered an error:
+
+[0m10:03:33.195154 [error] [MainThread]: Traceback (most recent call last):
+  File "/home/armando/ambientes_python/ambiente_koltin/lib/python3.12/site-packages/dbt/cli/requires.py", line 178, in wrapper
+    result, success = func(*args, **kwargs)
+                      ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/armando/ambientes_python/ambiente_koltin/lib/python3.12/site-packages/dbt/cli/requires.py", line 128, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/armando/ambientes_python/ambiente_koltin/lib/python3.12/site-packages/dbt/cli/main.py", line 483, in init
+    results = task.run()
+              ^^^^^^^^^^
+  File "/home/armando/ambientes_python/ambiente_koltin/lib/python3.12/site-packages/dbt/task/init.py", line 346, in run
+    self.setup_profile(profile_name)
+  File "/home/armando/ambientes_python/ambiente_koltin/lib/python3.12/site-packages/dbt/task/init.py", line 262, in setup_profile
+    self.create_profile_from_target(adapter, profile_name=profile_name)
+  File "/home/armando/ambientes_python/ambiente_koltin/lib/python3.12/site-packages/dbt/task/init.py", line 179, in create_profile_from_target
+    self.create_profile_from_profile_template(profile_template, profile_name)
+  File "/home/armando/ambientes_python/ambiente_koltin/lib/python3.12/site-packages/dbt/task/init.py", line 163, in create_profile_from_profile_template
+    target = self.generate_target_from_input(prompts, initial_target)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/armando/ambientes_python/ambiente_koltin/lib/python3.12/site-packages/dbt/task/init.py", line 129, in generate_target_from_input
+    target[key] = click.prompt(
+                  ^^^^^^^^^^^^^
+  File "/home/armando/ambientes_python/ambiente_koltin/lib/python3.12/site-packages/click/termui.py", line 168, in prompt
+    value = prompt_func(prompt)
+            ^^^^^^^^^^^^^^^^^^^
+  File "/home/armando/ambientes_python/ambiente_koltin/lib/python3.12/site-packages/click/termui.py", line 151, in prompt_func
+    raise Abort() from None
+click.exceptions.Abort
+
+[0m10:03:33.197459 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": false, "command_wall_clock_time": 8.537002, "process_in_blocks": "0", "process_kernel_time": 0.07796, "process_mem_max_rss": "103456", "process_out_blocks": "72", "process_user_time": 0.908545}
+[0m10:03:33.198701 [debug] [MainThread]: Command `dbt init` failed at 10:03:33.198449 after 8.54 seconds
+[0m10:03:33.199669 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7805d3174290>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7805d40e5820>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7805d30632c0>]}
+[0m10:03:33.200609 [debug] [MainThread]: Flushing usage events
+[0m10:03:33.853895 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m10:36:14.358382 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x729917ae0440>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x729915af38c0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7299161397f0>]}
+
+
+============================== 10:36:14.360734 | 6b7ca007-88c0-4d40-8c0d-ac6b2c24886c ==============================
+[0m10:36:14.360734 [info ] [MainThread]: Running with dbt=1.10.13
+[0m10:36:14.361213 [debug] [MainThread]: running dbt with arguments {'log_cache_events': 'False', 'empty': 'None', 'target_path': 'None', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'log_path': 'logs', 'no_print': 'None', 'profiles_dir': '/home/armando/.dbt', 'invocation_command': 'dbt debug', 'write_json': 'True', 'send_anonymous_usage_stats': 'True', 'warn_error': 'None', 'version_check': 'True', 'use_colors': 'True', 'partial_parse': 'True', 'printer_width': '80', 'indirect_selection': 'eager', 'introspect': 'True', 'quiet': 'False', 'use_experimental_parser': 'False', 'debug': 'False', 'log_format': 'default', 'static_parser': 'True', 'fail_fast': 'False', 'cache_selected_only': 'False'}
+[0m10:36:14.366377 [info ] [MainThread]: dbt version: 1.10.13
+[0m10:36:14.366741 [info ] [MainThread]: python version: 3.12.3
+[0m10:36:14.367006 [info ] [MainThread]: python path: /home/armando/ambientes_python/ambiente_koltin/bin/python3
+[0m10:36:14.367258 [info ] [MainThread]: os info: Linux-6.8.0-85-generic-x86_64-with-glibc2.39
+[0m10:36:14.403653 [info ] [MainThread]: Using profiles dir at /home/armando/.dbt
+[0m10:36:14.404018 [info ] [MainThread]: Using profiles.yml file at /home/armando/.dbt/profiles.yml
+[0m10:36:14.404293 [info ] [MainThread]: Using dbt_project.yml file at /home/armando/git/insurance_case/dbt_project.yml
+[0m10:36:14.404652 [info ] [MainThread]: adapter type: postgres
+[0m10:36:14.404895 [info ] [MainThread]: adapter version: 1.9.1
+[0m10:36:14.405170 [info ] [MainThread]: Configuration:
+[0m10:36:14.405427 [info ] [MainThread]:   profiles.yml file [[32mOK found and valid[0m]
+[0m10:36:14.405666 [info ] [MainThread]:   dbt_project.yml file [[31mERROR not found[0m]
+[0m10:36:14.405904 [info ] [MainThread]: Required dependencies:
+[0m10:36:14.406292 [debug] [MainThread]: Executing "git --help"
+[0m10:36:14.408165 [debug] [MainThread]: STDOUT: "b"usage: git [-v | --version] [-h | --help] [-C <path>] [-c <name>=<value>]\n           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]\n           [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--bare]\n           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]\n           [--config-env=<name>=<envvar>] <command> [<args>]\n\nThese are common Git commands used in various situations:\n\nstart a working area (see also: git help tutorial)\n   clone     Clone a repository into a new directory\n   init      Create an empty Git repository or reinitialize an existing one\n\nwork on the current change (see also: git help everyday)\n   add       Add file contents to the index\n   mv        Move or rename a file, a directory, or a symlink\n   restore   Restore working tree files\n   rm        Remove files from the working tree and from the index\n\nexamine the history and state (see also: git help revisions)\n   bisect    Use binary search to find the commit that introduced a bug\n   diff      Show changes between commits, commit and working tree, etc\n   grep      Print lines matching a pattern\n   log       Show commit logs\n   show      Show various types of objects\n   status    Show the working tree status\n\ngrow, mark and tweak your common history\n   branch    List, create, or delete branches\n   commit    Record changes to the repository\n   merge     Join two or more development histories together\n   rebase    Reapply commits on top of another base tip\n   reset     Reset current HEAD to the specified state\n   switch    Switch branches\n   tag       Create, list, delete or verify a tag object signed with GPG\n\ncollaborate (see also: git help workflows)\n   fetch     Download objects and refs from another repository\n   pull      Fetch from and integrate with another repository or a local branch\n   push      Update remote refs along with associated objects\n\n'git help -a' and 'git help -g' list available subcommands and some\nconcept guides. See 'git help <command>' or 'git help <concept>'\nto read about a specific subcommand or concept.\nSee 'git help git' for an overview of the system.\n""
+[0m10:36:14.408467 [debug] [MainThread]: STDERR: "b''"
+[0m10:36:14.408698 [info ] [MainThread]:  - git [[32mOK found[0m]
+
+[0m10:36:14.408941 [info ] [MainThread]: Connection:
+[0m10:36:14.409195 [info ] [MainThread]:   host: 127.0.0.1
+[0m10:36:14.409438 [info ] [MainThread]:   port: 5432
+[0m10:36:14.409669 [info ] [MainThread]:   user: user
+[0m10:36:14.409901 [info ] [MainThread]:   database: insurance_case_db
+[0m10:36:14.410133 [info ] [MainThread]:   schema: datawarehouse
+[0m10:36:14.410369 [info ] [MainThread]:   connect_timeout: 20
+[0m10:36:14.410598 [info ] [MainThread]:   role: None
+[0m10:36:14.410816 [info ] [MainThread]:   search_path: None
+[0m10:36:14.411027 [info ] [MainThread]:   keepalives_idle: 0
+[0m10:36:14.411231 [info ] [MainThread]:   sslmode: None
+[0m10:36:14.411456 [info ] [MainThread]:   sslcert: None
+[0m10:36:14.411696 [info ] [MainThread]:   sslkey: None
+[0m10:36:14.411929 [info ] [MainThread]:   sslrootcert: None
+[0m10:36:14.412160 [info ] [MainThread]:   application_name: dbt
+[0m10:36:14.412399 [info ] [MainThread]:   retries: 1
+[0m10:36:14.412720 [info ] [MainThread]: Registered adapter: postgres=1.9.1
+[0m10:36:14.456514 [debug] [MainThread]: Acquiring new postgres connection 'debug'
+[0m10:36:14.471307 [debug] [MainThread]: Using postgres connection "debug"
+[0m10:36:14.471644 [debug] [MainThread]: On debug: select 1 as id
+[0m10:36:14.471888 [debug] [MainThread]: Opening a new connection, currently in state init
+[0m10:36:14.490103 [debug] [MainThread]: SQL status: SELECT 1 in 0.018 seconds
+[0m10:36:14.490931 [debug] [MainThread]: On debug: Close
+[0m10:36:14.491269 [info ] [MainThread]:   Connection test: [[32mOK connection ok[0m]
+
+[0m10:36:14.491623 [info ] [MainThread]: [31m1 check failed:[0m
+[0m10:36:14.491887 [info ] [MainThread]: Project loading failed for the following reason:
+ project path </home/armando/git/insurance_case/dbt_project.yml> not found
+
+[0m10:36:14.492613 [debug] [MainThread]: Resource report: {"command_name": "debug", "command_success": false, "command_wall_clock_time": 0.17304407, "process_in_blocks": "11832", "process_kernel_time": 0.091405, "process_mem_max_rss": "112820", "process_out_blocks": "24", "process_user_time": 0.963274}
+[0m10:36:14.493019 [debug] [MainThread]: Command `dbt debug` failed at 10:36:14.492942 after 0.17 seconds
+[0m10:36:14.493309 [debug] [MainThread]: Connection 'debug' was properly closed.
+[0m10:36:14.493595 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x72991576ff80>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x729914b84200>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7299153a6f00>]}
+[0m10:36:14.493914 [debug] [MainThread]: Flushing usage events
+[0m10:36:14.964036 [debug] [MainThread]: An error was encountered while trying to flush usage events
