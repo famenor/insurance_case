@@ -1,0 +1,10 @@
+[32m2025-10-25 13:21:52 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 94aa6bb1-777f-4d4d-bce2-91926604914a - 2207076 - LOGS_CAPTURED - Started capturing logs in process (pid: 2207076).
+[32m2025-10-25 13:21:52 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 94aa6bb1-777f-4d4d-bce2-91926604914a - 2207076 - init_datawarehouse_resourses - STEP_START - Started execution of step "init_datawarehouse_resourses".
+INFO: Datawarehouse resources initialized
+[32m2025-10-25 13:21:52 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 94aa6bb1-777f-4d4d-bce2-91926604914a - 2207076 - init_datawarehouse_resourses - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+[32m2025-10-25 13:21:52 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 94aa6bb1-777f-4d4d-bce2-91926604914a - init_datawarehouse_resourses - Writing file at: /home/armando/git/insurance_case/dagster-quickstart/.tmp_dagster_home_kqk323qz/storage/init_datawarehouse_resourses using PickledObjectFilesystemIOManager...
+INFO: Context impl SQLiteImpl.
+INFO: Will assume non-transactional DDL.
+[32m2025-10-25 13:21:52 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 94aa6bb1-777f-4d4d-bce2-91926604914a - 2207076 - init_datawarehouse_resourses - ASSET_MATERIALIZATION - Materialized value init_datawarehouse_resourses.
+[32m2025-10-25 13:21:52 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 94aa6bb1-777f-4d4d-bce2-91926604914a - 2207076 - init_datawarehouse_resourses - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+[32m2025-10-25 13:21:52 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 94aa6bb1-777f-4d4d-bce2-91926604914a - 2207076 - init_datawarehouse_resourses - STEP_SUCCESS - Finished execution of step "init_datawarehouse_resourses" in 104ms.

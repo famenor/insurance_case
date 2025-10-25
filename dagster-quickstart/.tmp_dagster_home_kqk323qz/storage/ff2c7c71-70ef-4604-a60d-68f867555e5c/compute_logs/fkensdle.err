@@ -1,0 +1,10 @@
+[32m2025-10-25 12:07:41 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - ff2c7c71-70ef-4604-a60d-68f867555e5c - 2087630 - LOGS_CAPTURED - Started capturing logs in process (pid: 2087630).
+[32m2025-10-25 12:07:41 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - ff2c7c71-70ef-4604-a60d-68f867555e5c - 2087630 - generate_dim_screen - STEP_START - Started execution of step "generate_dim_screen".
+INFO: Context impl SQLiteImpl.
+INFO: Will assume non-transactional DDL.
+INFO: Screen dimension generated and stored in governance.dim_screen table
+[32m2025-10-25 12:07:41 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - ff2c7c71-70ef-4604-a60d-68f867555e5c - 2087630 - generate_dim_screen - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+[32m2025-10-25 12:07:41 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - ff2c7c71-70ef-4604-a60d-68f867555e5c - generate_dim_screen - Writing file at: /home/armando/git/insurance_case/dagster-quickstart/.tmp_dagster_home_kqk323qz/storage/generate_dim_screen using PickledObjectFilesystemIOManager...
+[32m2025-10-25 12:07:41 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - ff2c7c71-70ef-4604-a60d-68f867555e5c - 2087630 - generate_dim_screen - ASSET_MATERIALIZATION - Materialized value generate_dim_screen.
+[32m2025-10-25 12:07:41 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - ff2c7c71-70ef-4604-a60d-68f867555e5c - 2087630 - generate_dim_screen - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+[32m2025-10-25 12:07:41 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - ff2c7c71-70ef-4604-a60d-68f867555e5c - 2087630 - generate_dim_screen - STEP_SUCCESS - Finished execution of step "generate_dim_screen" in 86ms.
