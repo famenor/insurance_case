@@ -1,0 +1,15 @@
+[32m2025-10-26 15:25:58 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - cc836abb-9387-4f62-80db-0d019b6028dc - 3953478 - LOGS_CAPTURED - Started capturing logs in process (pid: 3953478).
+[32m2025-10-26 15:25:58 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - cc836abb-9387-4f62-80db-0d019b6028dc - 3953478 - insurance_case - STEP_START - Started execution of step "insurance_case".
+[32m2025-10-26 15:25:58 -0600[0m - dagster - [34mINFO[0m - __ASSET_JOB - cc836abb-9387-4f62-80db-0d019b6028dc - insurance_case - A dbt subsetted execution is being performed. Overriding default dbt selection arguments `['--select', 'fqn:*']` with arguments: `['insurance_case.age_at_diagnosis']`.
+INFO: __ASSET_JOB - cc836abb-9387-4f62-80db-0d019b6028dc - insurance_case - A dbt subsetted execution is being performed. Overriding default dbt selection arguments `['--select', 'fqn:*']` with arguments: `['insurance_case.age_at_diagnosis']`.
+[32m2025-10-26 15:26:02 -0600[0m - dagster - [34mINFO[0m - __ASSET_JOB - cc836abb-9387-4f62-80db-0d019b6028dc - insurance_case - Copying `/home/armando/git/insurance_case/insurance_case/target/partial_parse.msgpack` to `/home/armando/git/insurance_case/insurance_case/target/insurance_case-cc836ab-bbb5789/partial_parse.msgpack` to take advantage of partial parsing.
+INFO: __ASSET_JOB - cc836abb-9387-4f62-80db-0d019b6028dc - insurance_case - Copying `/home/armando/git/insurance_case/insurance_case/target/partial_parse.msgpack` to `/home/armando/git/insurance_case/insurance_case/target/insurance_case-cc836ab-bbb5789/partial_parse.msgpack` to take advantage of partial parsing.
+[32m2025-10-26 15:26:02 -0600[0m - dagster - [34mINFO[0m - __ASSET_JOB - cc836abb-9387-4f62-80db-0d019b6028dc - insurance_case - Running dbt command: `dbt build --select insurance_case.age_at_diagnosis`.
+INFO: __ASSET_JOB - cc836abb-9387-4f62-80db-0d019b6028dc - insurance_case - Running dbt command: `dbt build --select insurance_case.age_at_diagnosis`.
+[32m2025-10-26 15:26:05 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - cc836abb-9387-4f62-80db-0d019b6028dc - 3953478 - insurance_case - STEP_OUTPUT - Yielded output "gold__age_at_diagnosis" of type "Nothing". (Type check passed).
+INFO: Context impl SQLiteImpl.
+INFO: Will assume non-transactional DDL.
+[32m2025-10-26 15:26:05 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - cc836abb-9387-4f62-80db-0d019b6028dc - 3953478 - insurance_case - ASSET_MATERIALIZATION - Materialized value gold age_at_diagnosis.
+[32m2025-10-26 15:26:06 -0600[0m - dagster - [34mINFO[0m - __ASSET_JOB - cc836abb-9387-4f62-80db-0d019b6028dc - insurance_case - Finished dbt command: `dbt build --select insurance_case.age_at_diagnosis`.
+INFO: __ASSET_JOB - cc836abb-9387-4f62-80db-0d019b6028dc - insurance_case - Finished dbt command: `dbt build --select insurance_case.age_at_diagnosis`.
+[32m2025-10-26 15:26:06 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - cc836abb-9387-4f62-80db-0d019b6028dc - 3953478 - insurance_case - STEP_SUCCESS - Finished execution of step "insurance_case" in 7.19s.

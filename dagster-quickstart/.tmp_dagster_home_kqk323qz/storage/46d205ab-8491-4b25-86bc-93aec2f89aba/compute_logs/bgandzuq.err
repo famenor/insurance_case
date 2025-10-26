@@ -1,0 +1,30 @@
+[32m2025-10-26 11:01:24 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 46d205ab-8491-4b25-86bc-93aec2f89aba - 3528969 - LOGS_CAPTURED - Started capturing logs in process (pid: 3528969).
+[32m2025-10-26 11:01:24 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 46d205ab-8491-4b25-86bc-93aec2f89aba - 3528969 - load_fact_claim - STEP_START - Started execution of step "load_fact_claim".
+INFO: Context impl SQLiteImpl.
+INFO: Will assume non-transactional DDL.
+[32m2025-10-26 11:01:24 -0600[0m - dagster - [34mERROR[0m - [31m__ASSET_JOB - 46d205ab-8491-4b25-86bc-93aec2f89aba - 3528969 - load_fact_claim - STEP_FAILURE - Execution of step "load_fact_claim" failed.
+
+dagster._core.errors.DagsterExecutionStepExecutionError: Error occurred while executing op "load_fact_claim"::
+
+AttributeError: 'ClaimFactBuilder' object has no attribute 'surrogate_key_generator'
+
+Stack Trace:
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/utils.py", line 57, in op_execution_error_boundary
+    yield
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_utils/__init__.py", line 392, in iterate_with_context
+    next_output = next(iterator)
+                  ^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/compute_generator.py", line 137, in _coerce_op_compute_fn_to_iterator
+    result = invoke_compute_fn(
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/compute_generator.py", line 117, in invoke_compute_fn
+    return fn(context, **args_to_pass) if context_arg_provided else fn(**args_to_pass)
+                                                                    ^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/src/dagster_quickstart/defs/assets_silver.py", line 1511, in load_claim_consultation
+    fact_manager.build_fact(claim_fact_builder)
+  File "/home/armando/git/insurance_case/dagster-quickstart/src/dagster_quickstart/defs/assets_silver.py", line 1331, in build_fact
+    fact_builder.build_fact()
+  File "/home/armando/git/insurance_case/dagster-quickstart/src/dagster_quickstart/defs/assets_silver.py", line 1301, in build_fact
+    keys = self.surrogate_key_generator.generate_surrogated_keys(silver_fact.shape[0])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[0m

@@ -1,0 +1,15 @@
+[32m2025-10-26 13:48:31 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 72a49abb-3eef-45f3-be97-f4ce2c49562a - 3798657 - LOGS_CAPTURED - Started capturing logs in process (pid: 3798657).
+[32m2025-10-26 13:48:31 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 72a49abb-3eef-45f3-be97-f4ce2c49562a - 3798657 - insurance_case - STEP_START - Started execution of step "insurance_case".
+[32m2025-10-26 13:48:31 -0600[0m - dagster - [34mINFO[0m - __ASSET_JOB - 72a49abb-3eef-45f3-be97-f4ce2c49562a - insurance_case - A dbt subsetted execution is being performed. Overriding default dbt selection arguments `['--select', 'fqn:*']` with arguments: `['insurance_case.test']`.
+INFO: __ASSET_JOB - 72a49abb-3eef-45f3-be97-f4ce2c49562a - insurance_case - A dbt subsetted execution is being performed. Overriding default dbt selection arguments `['--select', 'fqn:*']` with arguments: `['insurance_case.test']`.
+[32m2025-10-26 13:48:38 -0600[0m - dagster - [34mINFO[0m - __ASSET_JOB - 72a49abb-3eef-45f3-be97-f4ce2c49562a - insurance_case - Copying `/home/armando/git/insurance_case/insurance_case/target/partial_parse.msgpack` to `/home/armando/git/insurance_case/insurance_case/target/insurance_case-72a49ab-693efcb/partial_parse.msgpack` to take advantage of partial parsing.
+INFO: __ASSET_JOB - 72a49abb-3eef-45f3-be97-f4ce2c49562a - insurance_case - Copying `/home/armando/git/insurance_case/insurance_case/target/partial_parse.msgpack` to `/home/armando/git/insurance_case/insurance_case/target/insurance_case-72a49ab-693efcb/partial_parse.msgpack` to take advantage of partial parsing.
+[32m2025-10-26 13:48:38 -0600[0m - dagster - [34mINFO[0m - __ASSET_JOB - 72a49abb-3eef-45f3-be97-f4ce2c49562a - insurance_case - Running dbt command: `dbt build --select insurance_case.test`.
+INFO: __ASSET_JOB - 72a49abb-3eef-45f3-be97-f4ce2c49562a - insurance_case - Running dbt command: `dbt build --select insurance_case.test`.
+[32m2025-10-26 13:48:46 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 72a49abb-3eef-45f3-be97-f4ce2c49562a - 3798657 - insurance_case - STEP_OUTPUT - Yielded output "gold__test" of type "Nothing". (Type check passed).
+INFO: Context impl SQLiteImpl.
+INFO: Will assume non-transactional DDL.
+[32m2025-10-26 13:48:46 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 72a49abb-3eef-45f3-be97-f4ce2c49562a - 3798657 - insurance_case - ASSET_MATERIALIZATION - Materialized value gold test.
+[32m2025-10-26 13:48:47 -0600[0m - dagster - [34mINFO[0m - __ASSET_JOB - 72a49abb-3eef-45f3-be97-f4ce2c49562a - insurance_case - Finished dbt command: `dbt build --select insurance_case.test`.
+INFO: __ASSET_JOB - 72a49abb-3eef-45f3-be97-f4ce2c49562a - insurance_case - Finished dbt command: `dbt build --select insurance_case.test`.
+[32m2025-10-26 13:48:47 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 72a49abb-3eef-45f3-be97-f4ce2c49562a - 3798657 - insurance_case - STEP_SUCCESS - Finished execution of step "insurance_case" in 15.97s.

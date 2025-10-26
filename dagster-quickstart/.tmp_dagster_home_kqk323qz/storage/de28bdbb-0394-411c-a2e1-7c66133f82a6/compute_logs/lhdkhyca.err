@@ -1,0 +1,32 @@
+[32m2025-10-26 09:58:11 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - de28bdbb-0394-411c-a2e1-7c66133f82a6 - 3427839 - LOGS_CAPTURED - Started capturing logs in process (pid: 3427839).
+[32m2025-10-26 09:58:11 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - de28bdbb-0394-411c-a2e1-7c66133f82a6 - 3427839 - generate_dim_date - STEP_START - Started execution of step "generate_dim_date".
+INFO: Context impl SQLiteImpl.
+INFO: Will assume non-transactional DDL.
+/home/armando/git/insurance_case/dagster-quickstart/src/dagster_quickstart/defs/assets_silver.py:873: FutureWarning: The behavior of 'isin' with dtype=datetime64[ns] and castable values (e.g. strings) is deprecated. In a future version, these will not be considered matching by isin. Explicitly cast to the appropriate dtype before calling isin instead.
+  dim_date.loc[dim_date['date'].isin(['2025-01-01', '2025-02-05', '2025-03-21', '2025-05-01',
+/home/armando/git/insurance_case/dagster-quickstart/src/dagster_quickstart/defs/assets_silver.py:896: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  self.dim_date = pd.concat([dim_date, special_dates], ignore_index=True)
+[32m2025-10-26 09:58:11 -0600[0m - dagster - [34mERROR[0m - [31m__ASSET_JOB - de28bdbb-0394-411c-a2e1-7c66133f82a6 - 3427839 - generate_dim_date - STEP_FAILURE - Execution of step "generate_dim_date" failed.
+
+dagster._core.errors.DagsterExecutionStepExecutionError: Error occurred while executing op "generate_dim_date"::
+
+_duckdb.IOException: IO Error: Could not set lock on file "/home/armando/git/insurance_case/dagster-quickstart/insurance_case.db": Conflicting lock is held in /snap/duckdb/9/duckdb (PID 3425052) by user armando. See also https://duckdb.org/docs/stable/connect/concurrency
+
+Stack Trace:
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/utils.py", line 57, in op_execution_error_boundary
+    yield
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_utils/__init__.py", line 392, in iterate_with_context
+    next_output = next(iterator)
+                  ^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/compute_generator.py", line 137, in _coerce_op_compute_fn_to_iterator
+    result = invoke_compute_fn(
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/compute_generator.py", line 117, in invoke_compute_fn
+    return fn(context, **args_to_pass) if context_arg_provided else fn(**args_to_pass)
+                                                                    ^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/src/dagster_quickstart/defs/assets_silver.py", line 1350, in generate_dim_date
+    dimension_manager.init_date_dimension()
+  File "/home/armando/git/insurance_case/dagster-quickstart/src/dagster_quickstart/defs/assets_silver.py", line 1019, in init_date_dimension
+    conn = duckdb.connect("insurance_case.db")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[0m

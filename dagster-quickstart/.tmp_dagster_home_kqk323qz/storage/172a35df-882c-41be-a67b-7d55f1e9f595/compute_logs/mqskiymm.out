@@ -1,0 +1,25 @@
+Running with dbt=1.10.13
+Registered adapter: duckdb=1.9.6
+Found 2 models, 445 macros
+
+Concurrency: 1 threads (target='dev')
+
+1 of 1 START sql table model gold.diagnosis .................................... [RUN]
+1 of 1 ERROR creating sql table model gold.diagnosis ........................... [[31mERROR[0m in 0.07s]
+
+Finished running 1 table model in 0 hours 0 minutes and 0.21 seconds (0.21s).
+
+[31mCompleted with 1 error, 0 partial successes, and 0 warnings:[0m
+
+[31mFailure in model diagnosis (models/diagnosis.sql)[0m
+  Runtime Error in model diagnosis (models/diagnosis.sql)
+  Binder Error: Table "dd" does not have a column named "cie_code"
+  
+  Candidate bindings: : "cie_id"
+  
+  LINE 13:            fc.consultation_id, fc.consultation_date_id, dd.cie_code, dd.cie_name
+                                                                   ^
+
+  compiled code at target/insurance_case-172a35d-d8d9f7c/compiled/insurance_case/models/diagnosis.sql
+
+Done. PASS=0 WARN=0 ERROR=1 SKIP=0 NO-OP=0 TOTAL=1

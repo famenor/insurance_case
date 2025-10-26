@@ -44,7 +44,7 @@ class DatawarehouseResourcesCreator(ABC):
                 error_utc_timestamp TIMESTAMP,
                 table_name VARCHAR, 
                 column_name VARCHAR,
-                record_identifier INTEGER,
+                record_identifier VARCHAR,
                 original_value VARCHAR,
                 replaced_value VARCHAR,
                 error_condition VARCHAR
@@ -238,6 +238,9 @@ class CieCsvExtractor(GenericCsvExtractor):
         self.data = self.data.rename(columns={'cie_code': 'cie_id', 
                                               'cie_name': 'cie_name'})
 
+        #DELETE 'X' CHARACTERS AT THE END OF CIE IDENTIFIERS
+        #self.data['cie_id'] = self.data['cie_id'].str.rstrip('X')
+
     def screen_data(self):
         print('Screening data...')
 
@@ -335,7 +338,7 @@ class ConsultationsCsvExtractor(GenericCsvExtractor):
 
         #ADD AUDIT FACT COLUMN
         self.data['audit_passed'] = 'Sí'
-        audit_dim_assembler = AuditDimensionAssembler(self.errors, 'term_dummy')
+        audit_dim_assembler = AuditDimensionAssembler(self.errors, 'consultations')
         unsolved_rows = audit_dim_assembler.get_unsolved_rows()
         self.data.loc[self.data['consultation_id'].isin(unsolved_rows), 'audit_passed'] = 'No'
 
@@ -347,6 +350,62 @@ class ConsultationsCsvExtractor(GenericCsvExtractor):
             conn = duckdb.connect("insurance_case.db")
             conn.sql("CREATE OR REPLACE TABLE bronze.fact_consultation AS SELECT * FROM data")
             conn.close()  
+
+class ConsultationDiagnosesCsvExtractor(GenericCsvExtractor):
+
+    def extract_data(self, file_path):
+
+        path_pathologies = '../datalake/raw/pathologies.csv'
+        pathologies = pd.read_csv(path_pathologies, usecols=['code', 'id'])
+        pathologies = pathologies.rename(columns={'code': 'cie_id', 'id': 'pathology_id'})
+
+        self.data = pd.read_csv(file_path)
+        self.data = self.data.rename(columns={'consultation_id': 'consultation_id',
+                                              'diagnosis': 'pathology_id'}) 
+        self.data['consultation_diagnosis_id'] = np.arange(1, self.data.shape[0] + 1)
+
+        self.data = self.data.merge(pathologies, how='inner', on='pathology_id')
+        self.data = self.data.drop(columns=['pathology_id'])
+    
+
+    def screen_data(self):
+        
+        conn = duckdb.connect("insurance_case.db")
+        consultation_identifiers = conn.sql("SELECT consultation_id FROM silver.fact_consultation").df()
+        cie_identifiers = conn.sql("SELECT cie_id FROM silver.dim_cie").df()
+        conn.close()
+        
+        self.facade_screens.setup(data=self.data, table_name='consultation_diagnoses', identifier='consultation_diagnosis_id')
+        
+        #CHECK NULL VALUES
+        columns = ['consultation_id', 'cie_id']
+        for column in columns:
+            self.facade_screens.apply_screen_is_missing_value(column)
+
+        #CHECK UNIQUE VALUES
+        self.facade_screens.apply_screen_is_not_unique('consultation_diagnosis_id')
+
+        #CHECK OUT OF LIST VALUES
+        self.facade_screens.apply_screen_is_out_of_list_value('consultation_id', consultation_identifiers['consultation_id'].tolist())
+        self.facade_screens.apply_screen_is_out_of_list_value('cie_id', cie_identifiers['cie_id'].tolist())
+
+        self.errors = self.facade_screens.get_error_events_detail()
+        self.data = self.data.drop(columns=['__screen__'])
+
+        #ADD AUDIT FACT COLUMN
+        self.data['audit_passed'] = 'Sí'
+        audit_dim_assembler = AuditDimensionAssembler(self.errors, 'consultation_diagnoses')
+        unsolved_rows = audit_dim_assembler.get_unsolved_rows()
+        self.data.loc[self.data['consultation_diagnosis_id'].isin(unsolved_rows), 'audit_passed'] = 'No'
+
+    def export_data(self):
+
+        data = self.data
+
+        conn = duckdb.connect("insurance_case.db")
+        conn.sql("CREATE OR REPLACE TABLE bronze.bridge_consultation_diagnosis AS SELECT * FROM data")
+        conn.close() 
+
 
 class ClaimsCsvExtractor(GenericCsvExtractor):
 
@@ -394,6 +453,7 @@ class ClaimsCsvExtractor(GenericCsvExtractor):
 
         conn = duckdb.connect("insurance_case.db")
         certificate_numbers = conn.sql("SELECT certificate_number FROM silver.dim_certificate").df()
+        cie_identifiers = conn.sql("SELECT cie_id FROM silver.dim_cie").df()
         conn.close()
         
         self.facade_screens.setup(data=self.data, table_name='claims', identifier='claim_id')
@@ -438,28 +498,38 @@ class ClaimsCsvExtractor(GenericCsvExtractor):
         self.facade_screens.apply_screen_is_lower_than('payment_date', 'first_expense_date')
         self.facade_screens.apply_screen_is_lower_than('first_expense_date', 'incident_date')
 
+        self.data['incident_date_id'] = self.data['incident_date'].dt.strftime('%Y%m%d')
+        self.data['payment_date_id'] = self.data['payment_date'].dt.strftime('%Y%m%d')
+        self.data['first_expense_date_id'] = self.data['first_expense_date'].dt.strftime('%Y%m%d')
+        self.data['month_cont_date_id'] = self.data['month_cont_date'].dt.strftime('%Y%m%d')
+
+        self.data['incident_date_id'] = self.data['incident_date_id'].fillna('-2').astype(int)
+        self.data['payment_date_id'] = self.data['payment_date_id'].fillna('-2').astype(int)
+        self.data['first_expense_date_id'] = self.data['first_expense_date_id'].fillna('-2').astype(int)
+        self.data['month_cont_date_id'] = self.data['month_cont_date_id'].fillna('-2').astype(int)
+
         #CHECK OUT OF LIST VALUES
         self.facade_screens.apply_screen_is_out_of_list_value('certificate_number', certificate_numbers['certificate_number'].tolist())
         self.facade_screens.apply_screen_is_out_of_list_value('incident_reason', ['Enfermedad', 'Accidente'])
         self.facade_screens.apply_screen_is_out_of_list_value('payment_type', ['Pago Directo'])
+        self.facade_screens.apply_screen_is_out_of_list_value('cie_id', cie_identifiers['cie_id'].tolist())
 
         self.errors = self.facade_screens.get_error_events_detail()
         self.data = self.data.drop(columns=['__screen__'])
 
         #ADD AUDIT FACT COLUMN
         self.data['audit_passed'] = 'Sí'
-        audit_dim_assembler = AuditDimensionAssembler(self.errors, 'term_dummy')
+        audit_dim_assembler = AuditDimensionAssembler(self.errors, 'claims')
         unsolved_rows = audit_dim_assembler.get_unsolved_rows()
         self.data.loc[self.data['claim_id'].isin(unsolved_rows), 'audit_passed'] = 'No'
 
     def export_data(self):
 
-        if self.errors is None:
-            data = self.data
+        data = self.data
 
-            conn = duckdb.connect("insurance_case.db")
-            conn.sql("CREATE OR REPLACE TABLE bronze.fact_claim AS SELECT * FROM data")
-            conn.close() 
+        conn = duckdb.connect("insurance_case.db")
+        conn.sql("CREATE OR REPLACE TABLE bronze.fact_claim AS SELECT * FROM data")
+        conn.close() 
 
 
 
@@ -1107,7 +1177,7 @@ class DimensionManager(AbstractDimensionManager):
                 holiday_indicator
             FROM silver.dim_date""")
 
-        conn.sql("""CREATE OR REPLACE VIEW silver.month_cont_date AS
+        conn.sql("""CREATE OR REPLACE VIEW silver.dim_month_cont_date AS
             SELECT
                 date_id AS month_cont_date_id,
                 date, date_name,
@@ -1243,6 +1313,99 @@ class ConsultationFactBuilder(AbtractFactBuilder):
         conn = duckdb.connect("insurance_case.db")
         conn.sql("CREATE OR REPLACE TABLE silver.fact_consultation AS SELECT * FROM silver_fact")
         conn.close()
+
+class ConsultationDiagnosesBridgeBuilder(AbtractFactBuilder):
+    
+    def build_fact(self):
+
+        conn = duckdb.connect("insurance_case.db")
+        silver_cie_id = conn.sql("SELECT surrogated_id AS surrogated_cie_id, cie_id FROM silver.dim_cie").df()
+        bronze_fact = conn.sql("SELECT * FROM bronze.bridge_consultation_diagnosis").df()
+        conn.close()
+
+        silver_fact = bronze_fact.copy()
+        silver_fact = silver_fact.loc[silver_fact['audit_passed'] == 'Sí']
+
+        shape_01 = silver_fact.shape[0]
+
+        silver_fact = silver_fact.merge(silver_cie_id, on='cie_id', how='inner')
+        silver_fact = silver_fact.drop(columns=['cie_id'])
+
+        shape_02 = silver_fact.shape[0]
+
+        if not shape_01 == shape_02:
+            raise Exception('Data loss detected during the fact merge process')
+
+        columns_order = ['consultation_id', 'surrogated_cie_id']
+        self.silver_fact = silver_fact[columns_order]
+
+    def export_fact(self):
+
+        silver_fact = self.silver_fact
+        
+        conn = duckdb.connect("insurance_case.db")
+        conn.sql("CREATE OR REPLACE TABLE silver.bridge_consultation_diagnosis AS SELECT * FROM silver_fact")
+        conn.close()
+
+
+class ClaimFactBuilder(AbtractFactBuilder):
+    
+    def build_fact(self):
+
+        conn = duckdb.connect("insurance_case.db")
+        silver_incident_date = conn.sql("SELECT incident_date_id FROM silver.dim_incident_date").df()
+        silver_payment_date = conn.sql("SELECT payment_date_id FROM silver.dim_payment_date").df()
+        silver_first_expense_date = conn.sql("SELECT first_expense_date_id FROM silver.dim_first_expense_date").df()
+        silver_month_cont_date = conn.sql("SELECT month_cont_date_id FROM silver.dim_month_cont_date").df()
+        silver_certificate_id = conn.sql("SELECT surrogated_id AS surrogated_certificate_id, certificate_number FROM silver.dim_certificate").df()
+        silver_cie_id = conn.sql("SELECT surrogated_id AS surrogated_cie_id, cie_id FROM silver.dim_cie").df()
+        bronze_fact = conn.sql("SELECT * FROM bronze.fact_claim").df()
+        conn.close()
+
+        silver_fact = bronze_fact.copy()
+        silver_fact = silver_fact.loc[silver_fact['audit_passed'] == 'Sí']
+
+        shape_01 = silver_fact.shape[0]
+
+        silver_fact = silver_fact.merge(silver_incident_date, on='incident_date_id', how='inner')
+        silver_fact = silver_fact.drop(columns=['incident_date'])
+
+        silver_fact = silver_fact.merge(silver_payment_date, on='payment_date_id', how='inner')
+        silver_fact = silver_fact.drop(columns=['payment_date'])
+
+        silver_fact = silver_fact.merge(silver_first_expense_date, on='first_expense_date_id', how='inner')
+        silver_fact = silver_fact.drop(columns=['first_expense_date'])
+
+        silver_fact = silver_fact.merge(silver_month_cont_date, on='month_cont_date_id', how='inner')
+        silver_fact = silver_fact.drop(columns=['month_cont_date'])
+
+        silver_fact = silver_fact.merge(silver_certificate_id, on='certificate_number', how='inner')
+        silver_fact = silver_fact.drop(columns=['certificate_number'])
+
+        silver_fact = silver_fact.merge(silver_cie_id, on='cie_id', how='inner')
+        silver_fact = silver_fact.drop(columns=['cie_id'])
+
+        shape_02 = silver_fact.shape[0]
+
+        if not shape_01 == shape_02:
+            raise Exception('Data loss detected during the fact merge process')
+
+        columns_order = ['claim_id', 'state', 'surrogated_cie_id', 'incident_date_id', 
+                         'payment_date_id', 'first_expense_date_id', 'ocurrido',
+                         'payments', 'coinsurance', 'ivarec', 'deductible',
+                         'incident_reason', 'month_cont_date_id', 'payment_type',
+                         'provider', 'surrogated_certificate_id', 'audit_passed']
+        self.silver_fact = silver_fact[columns_order]
+
+    def export_fact(self):
+
+        silver_fact = self.silver_fact
+        
+        conn = duckdb.connect("insurance_case.db")
+        conn.sql("CREATE OR REPLACE TABLE silver.fact_claim AS SELECT * FROM silver_fact")
+        conn.close()
+
+
 
 class AbstractFactManager(ABC):
     
@@ -1410,6 +1573,34 @@ def load_fact_consultation():
 
     return
 
+## CONSULTATION DIAGNOSES
+@dg.asset(name='extract_consultation_diagnoses', group_name='bronze', 
+          deps=['load_fact_consultation', 'load_dim_cie'])
+def extract_consultation_diagnoses():
+
+    path = '../datalake/preprocessed/consultation_diagnoses_dummy.csv'
+    extractor = ConsultationDiagnosesCsvExtractor()
+    extractor.extract_data(path)
+    extractor.screen_data()
+
+    error_events_generator = ErrorEventLogsGenerator(error_events_detail=extractor.errors)
+    error_events_generator.export_error_events()
+
+    extractor.export_data()
+
+    return
+
+@dg.asset(name='load_bridge_consultation_diagnosis', group_name='silver', 
+          deps=['extract_consultation_diagnoses'])
+def load_bridge_consultation_diagnosis():
+
+    builder = ConsultationDiagnosesBridgeBuilder()
+
+    fact_manager = FactManager()
+    fact_manager.build_fact(builder)
+
+    return
+
 ## CLAIMS
 @dg.asset(name='extract_claims', group_name='bronze', 
           deps=['load_dim_cerfificate', 'generate_dim_date'])
@@ -1424,5 +1615,16 @@ def extract_claims():
     error_events_generator.export_error_events()
 
     extractor.export_data()
+
+    return
+
+@dg.asset(name='load_fact_claim', group_name='silver', 
+          deps=['extract_claims'])
+def load_claim_consultation():
+
+    claim_fact_builder = ClaimFactBuilder()
+
+    fact_manager = FactManager()
+    fact_manager.build_fact(claim_fact_builder)
 
     return

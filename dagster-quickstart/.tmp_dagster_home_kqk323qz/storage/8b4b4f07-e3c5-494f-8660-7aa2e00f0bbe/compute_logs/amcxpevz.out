@@ -1,0 +1,11 @@
+Running with dbt=1.10.13
+Registered adapter: duckdb=1.9.6
+Found 2 models, 445 macros
+
+Concurrency: 1 threads (target='dev')
+
+
+Finished running  in 0 hours 0 minutes and 0.05 seconds (0.05s).
+Encountered an error:
+Runtime Error
+  IO Error: Could not set lock on file "/home/armando/git/insurance_case/insurance_case/../dagster-quickstart/insurance_case.db": Conflicting lock is held in /snap/duckdb/9/duckdb (PID 3932074) by user armando. See also https://duckdb.org/docs/stable/connect/concurrency

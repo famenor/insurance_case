@@ -1,0 +1,10 @@
+Running with dbt=1.10.13
+Registered adapter: duckdb=1.9.6
+Found 1 test, 2 models, 445 macros
+
+Concurrency: 1 threads (target='dev')
+
+1 of 2 START sql table model gold.age_at_diagnosis ............................. [RUN]
+1 of 2 OK created sql table model gold.age_at_diagnosis ........................ [[32mOK[0m in 0.18s]
+2 of 2 START test assert_order ................................................. [RUN]
+2 of 2 FAIL 346 assert_order ................................................... [[31mFAIL 346[0m in 0.04s]

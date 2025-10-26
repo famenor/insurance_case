@@ -1,0 +1,61 @@
+[32m2025-10-26 15:19:42 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f2a7c1bb-4f29-4028-95fa-4340b0ae5c52 - 3943545 - LOGS_CAPTURED - Started capturing logs in process (pid: 3943545).
+[32m2025-10-26 15:19:42 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f2a7c1bb-4f29-4028-95fa-4340b0ae5c52 - 3943545 - insurance_case - STEP_START - Started execution of step "insurance_case".
+[32m2025-10-26 15:19:42 -0600[0m - dagster - [34mINFO[0m - __ASSET_JOB - f2a7c1bb-4f29-4028-95fa-4340b0ae5c52 - insurance_case - A dbt subsetted execution is being performed. Overriding default dbt selection arguments `['--select', 'fqn:*']` with arguments: `['insurance_case.age_at_diagnosis']`.
+INFO: __ASSET_JOB - f2a7c1bb-4f29-4028-95fa-4340b0ae5c52 - insurance_case - A dbt subsetted execution is being performed. Overriding default dbt selection arguments `['--select', 'fqn:*']` with arguments: `['insurance_case.age_at_diagnosis']`.
+[32m2025-10-26 15:19:46 -0600[0m - dagster - [34mINFO[0m - __ASSET_JOB - f2a7c1bb-4f29-4028-95fa-4340b0ae5c52 - insurance_case - Copying `/home/armando/git/insurance_case/insurance_case/target/partial_parse.msgpack` to `/home/armando/git/insurance_case/insurance_case/target/insurance_case-f2a7c1b-40b717a/partial_parse.msgpack` to take advantage of partial parsing.
+INFO: __ASSET_JOB - f2a7c1bb-4f29-4028-95fa-4340b0ae5c52 - insurance_case - Copying `/home/armando/git/insurance_case/insurance_case/target/partial_parse.msgpack` to `/home/armando/git/insurance_case/insurance_case/target/insurance_case-f2a7c1b-40b717a/partial_parse.msgpack` to take advantage of partial parsing.
+[32m2025-10-26 15:19:46 -0600[0m - dagster - [34mINFO[0m - __ASSET_JOB - f2a7c1bb-4f29-4028-95fa-4340b0ae5c52 - insurance_case - Running dbt command: `dbt build --select insurance_case.age_at_diagnosis`.
+INFO: __ASSET_JOB - f2a7c1bb-4f29-4028-95fa-4340b0ae5c52 - insurance_case - Running dbt command: `dbt build --select insurance_case.age_at_diagnosis`.
+[32m2025-10-26 15:19:50 -0600[0m - dagster - [34mINFO[0m - __ASSET_JOB - f2a7c1bb-4f29-4028-95fa-4340b0ae5c52 - insurance_case - Finished dbt command: `dbt build --select insurance_case.age_at_diagnosis`.
+INFO: __ASSET_JOB - f2a7c1bb-4f29-4028-95fa-4340b0ae5c52 - insurance_case - Finished dbt command: `dbt build --select insurance_case.age_at_diagnosis`.
+[32m2025-10-26 15:19:50 -0600[0m - dagster - [34mERROR[0m - [31m__ASSET_JOB - f2a7c1bb-4f29-4028-95fa-4340b0ae5c52 - 3943545 - insurance_case - STEP_FAILURE - Execution of step "insurance_case" failed.
+
+dagster_dbt.errors.DagsterDbtCliRuntimeError: The dbt CLI process with command
+
+`dbt build --select insurance_case.age_at_diagnosis`
+
+failed with exit code `1`. Check the stdout in the Dagster compute logs for the full information about the error, or view the dbt debug log: /home/armando/git/insurance_case/insurance_case/target/insurance_case-f2a7c1b-40b717a/dbt.log.
+
+Errors parsed from dbt logs:
+
+1 of 1 ERROR creating sql table model gold.age_at_diagnosis .................... [[31mERROR[0m in 0.07s]
+
+[31mFailure in model age_at_diagnosis (models/age_at_diagnosis.sql)[0m
+
+  Runtime Error in model age_at_diagnosis (models/age_at_diagnosis.sql)
+  Binder Error: Referenced column "year" not found in FROM clause!
+  Candidate bindings: "cie_name", "surrogated_certificate_id"
+  
+  LINE 34:            DATEDIFF(year, birth_date, consultation_date) AS 'Edad al Diagnóstico...
+                               ^
+
+Stack Trace:
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/execute_plan.py", line 247, in dagster_event_sequence_for_step
+    yield from check.generator(step_events)
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/execute_step.py", line 504, in core_dagster_event_sequence_for_step
+    for user_event in _step_output_error_checked_user_event_sequence(
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/execute_step.py", line 183, in _step_output_error_checked_user_event_sequence
+    for user_event in user_event_sequence:
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/execute_step.py", line 88, in _process_asset_results_to_events
+    for user_event in user_event_sequence:
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/compute.py", line 190, in execute_core_compute
+    for step_output in _yield_compute_results(step_context, inputs, compute_fn, compute_context):
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/compute.py", line 159, in _yield_compute_results
+    for event in iterate_with_context(
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_utils/__init__.py", line 392, in iterate_with_context
+    next_output = next(iterator)
+                  ^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster_dbt/components/dbt_project/component.py", line 282, in _fn
+    yield from self.execute(context=context, dbt=self.cli_resource)
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster_dbt/components/dbt_project/component.py", line 340, in execute
+    yield from self._get_dbt_event_iterator(context, dbt)
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster_dbt/core/dbt_event_iterator.py", line 215, in __next__
+    return next(self._inner_iterator)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster_dbt/core/dbt_cli_invocation.py", line 289, in _stream_asset_events
+    for event in self.stream_raw_events():
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster_dbt/core/dbt_cli_invocation.py", line 382, in stream_raw_events
+    self._raise_on_error()
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster_dbt/core/dbt_cli_invocation.py", line 475, in _raise_on_error
+    raise error
+[0m

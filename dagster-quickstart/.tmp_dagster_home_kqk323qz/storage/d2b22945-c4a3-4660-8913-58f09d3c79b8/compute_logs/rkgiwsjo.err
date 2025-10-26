@@ -1,0 +1,41 @@
+[32m2025-10-26 12:50:56 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - d2b22945-c4a3-4660-8913-58f09d3c79b8 - 3706013 - LOGS_CAPTURED - Started capturing logs in process (pid: 3706013).
+[32m2025-10-26 12:50:56 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - d2b22945-c4a3-4660-8913-58f09d3c79b8 - 3706013 - load_bridge_consultation_diagnosis - STEP_START - Started execution of step "load_bridge_consultation_diagnosis".
+INFO: Context impl SQLiteImpl.
+INFO: Will assume non-transactional DDL.
+[32m2025-10-26 12:50:56 -0600[0m - dagster - [34mERROR[0m - [31m__ASSET_JOB - d2b22945-c4a3-4660-8913-58f09d3c79b8 - 3706013 - load_bridge_consultation_diagnosis - STEP_FAILURE - Execution of step "load_bridge_consultation_diagnosis" failed.
+
+dagster._core.errors.DagsterExecutionStepExecutionError: Error occurred while executing op "load_bridge_consultation_diagnosis"::
+
+KeyError: "['certificate_id'] not found in axis"
+
+Stack Trace:
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/utils.py", line 57, in op_execution_error_boundary
+    yield
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_utils/__init__.py", line 392, in iterate_with_context
+    next_output = next(iterator)
+                  ^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/compute_generator.py", line 137, in _coerce_op_compute_fn_to_iterator
+    result = invoke_compute_fn(
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/compute_generator.py", line 117, in invoke_compute_fn
+    return fn(context, **args_to_pass) if context_arg_provided else fn(**args_to_pass)
+                                                                    ^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/src/dagster_quickstart/defs/assets_silver.py", line 1600, in load_bridge_consultation_diagnosis
+    fact_manager.build_fact(builder)
+  File "/home/armando/git/insurance_case/dagster-quickstart/src/dagster_quickstart/defs/assets_silver.py", line 1420, in build_fact
+    fact_builder.build_fact()
+  File "/home/armando/git/insurance_case/dagster-quickstart/src/dagster_quickstart/defs/assets_silver.py", line 1332, in build_fact
+    silver_fact = silver_fact.drop(columns=['certificate_id'])
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/pandas/core/frame.py", line 5603, in drop
+    return super().drop(
+           ^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/pandas/core/generic.py", line 4810, in drop
+    obj = obj._drop_axis(labels, axis, level=level, errors=errors)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/pandas/core/generic.py", line 4852, in _drop_axis
+    new_axis = axis.drop(labels, errors=errors)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/pandas/core/indexes/base.py", line 7136, in drop
+    raise KeyError(f"{labels[mask].tolist()} not found in axis")
+[0m

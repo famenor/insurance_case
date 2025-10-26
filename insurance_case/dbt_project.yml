@@ -31,26 +31,5 @@ clean-targets:         # directories to be removed by `dbt clean`
 # files using the `{{ config(...) }}` macro.
 models:
   insurance_case:
+    +schema: gold
     +materialized: table
-
-seeds:
-  insurance_case:
-    raw:
-      certificate_dummy:
-        +enabled: true
-        +tags: [bronze, certificates]
-        +schema: bronze
-      claims_dummy:
-        +enabled: true
-        +tags: [bronze, claims]
-        +schema: bronze
-      consultas_dummy:
-        +enabled: false
-      pathologies:
-        +enabled: true
-        +tags: [raw, pathologies]
-        +schema: bronze
-      terms_dummy:
-        +enabled: true
-        +tags: [bronze, certificates]
-        +schema: bronze
