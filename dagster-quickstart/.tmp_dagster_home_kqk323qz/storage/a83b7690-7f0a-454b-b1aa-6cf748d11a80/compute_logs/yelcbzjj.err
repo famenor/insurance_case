@@ -1,0 +1,43 @@
+[32m2025-10-25 18:26:36 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - a83b7690-7f0a-454b-b1aa-6cf748d11a80 - 2685092 - LOGS_CAPTURED - Started capturing logs in process (pid: 2685092).
+[32m2025-10-25 18:26:36 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - a83b7690-7f0a-454b-b1aa-6cf748d11a80 - 2685092 - extract_terms - STEP_START - Started execution of step "extract_terms".
+INFO: Context impl SQLiteImpl.
+INFO: Will assume non-transactional DDL.
+[32m2025-10-25 18:26:36 -0600[0m - dagster - [34mERROR[0m - [31m__ASSET_JOB - a83b7690-7f0a-454b-b1aa-6cf748d11a80 - 2685092 - extract_terms - STEP_FAILURE - Execution of step "extract_terms" failed.
+
+dagster._core.errors.DagsterExecutionStepExecutionError: Error occurred while executing op "extract_terms"::
+
+FileNotFoundError: [Errno 2] No such file or directory: 'datalake/raw/certificate_dummy.csv'
+
+Stack Trace:
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/utils.py", line 57, in op_execution_error_boundary
+    yield
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_utils/__init__.py", line 392, in iterate_with_context
+    next_output = next(iterator)
+                  ^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/compute_generator.py", line 137, in _coerce_op_compute_fn_to_iterator
+    result = invoke_compute_fn(
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/compute_generator.py", line 117, in invoke_compute_fn
+    return fn(context, **args_to_pass) if context_arg_provided else fn(**args_to_pass)
+                                                                    ^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/src/dagster_quickstart/defs/assets_silver.py", line 824, in extract_terms
+    extractor.extract_data(path)
+  File "/home/armando/git/insurance_case/dagster-quickstart/src/dagster_quickstart/defs/assets_silver.py", line 172, in extract_data
+    self.data = pd.read_csv(file_path)
+                ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 620, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1620, in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1880, in _make_engine
+    self.handles = get_handle(
+                   ^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/pandas/io/common.py", line 873, in get_handle
+    handle = open(
+             ^^^^^
+[0m

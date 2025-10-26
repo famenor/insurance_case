@@ -1,0 +1,30 @@
+[32m2025-10-25 23:36:32 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 46e1d7ca-5eef-498e-ab13-9ae696f16406 - 3176060 - LOGS_CAPTURED - Started capturing logs in process (pid: 3176060).
+[32m2025-10-25 23:36:32 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 46e1d7ca-5eef-498e-ab13-9ae696f16406 - 3176060 - load_fact_consultation - STEP_START - Started execution of step "load_fact_consultation".
+INFO: Context impl SQLiteImpl.
+INFO: Will assume non-transactional DDL.
+[32m2025-10-25 23:36:32 -0600[0m - dagster - [34mERROR[0m - [31m__ASSET_JOB - 46e1d7ca-5eef-498e-ab13-9ae696f16406 - 3176060 - load_fact_consultation - STEP_FAILURE - Execution of step "load_fact_consultation" failed.
+
+dagster._core.errors.DagsterExecutionStepExecutionError: Error occurred while executing op "load_fact_consultation"::
+
+NameError: name 'silver_term_begin_date' is not defined
+
+Stack Trace:
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/utils.py", line 57, in op_execution_error_boundary
+    yield
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_utils/__init__.py", line 392, in iterate_with_context
+    next_output = next(iterator)
+                  ^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/compute_generator.py", line 137, in _coerce_op_compute_fn_to_iterator
+    result = invoke_compute_fn(
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/compute_generator.py", line 117, in invoke_compute_fn
+    return fn(context, **args_to_pass) if context_arg_provided else fn(**args_to_pass)
+                                                                    ^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/src/dagster_quickstart/defs/assets_silver.py", line 1240, in load_fact_consultation
+    fact_manager.build_fact(consultation_fact_builder)
+  File "/home/armando/git/insurance_case/dagster-quickstart/src/dagster_quickstart/defs/assets_silver.py", line 1088, in build_fact
+    fact_builder.build_fact()
+  File "/home/armando/git/insurance_case/dagster-quickstart/src/dagster_quickstart/defs/assets_silver.py", line 1050, in build_fact
+    silver_fact = silver_fact.merge(silver_term_begin_date[['consultation_date_id', 'date']],
+                                    ^^^^^^^^^^^^^^^^^^^^^^
+[0m

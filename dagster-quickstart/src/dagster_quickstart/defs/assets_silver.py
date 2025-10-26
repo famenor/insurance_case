@@ -162,7 +162,306 @@ class CertificatesCsvExtractor(GenericCsvExtractor):
             data = self.data
 
             conn = duckdb.connect("insurance_case.db")
-            conn.sql("CREATE OR REPLACE TABLE bronze.dim_certificates AS SELECT * FROM data")
+            conn.sql("CREATE OR REPLACE TABLE bronze.dim_certificate AS SELECT * FROM data")
+            conn.close()
+
+        else:
+            raise Exception('Dimension data contains errors. Cannot export to datawarehouse.')
+
+class TermsCsvExtractor(GenericCsvExtractor):
+
+    def extract_data(self, file_path):
+        print('Reading file: ', file_path)
+        self.data = pd.read_csv(file_path)
+        self.data = self.data.rename(columns={'id': 'term_id', 
+                                              'certificate_number': 'certificate_id',
+                                              'fecha_inicio_vigencia': 'term_begin_date',
+                                              'fecha_fin_periodo': 'term_end_date'})
+
+    def screen_data(self):
+        print('Screening data...')
+
+        conn = duckdb.connect("insurance_case.db")
+        certificate_ids = conn.sql("SELECT certificate_id FROM silver.dim_certificate").df()
+        conn.close()
+
+        self.facade_screens.setup(data=self.data, table_name='term_dummy', identifier='term_id')
+        
+        #CHECK NULL VALUES
+        columns = ['certificate_id', 'term_begin_date', 'term_end_date']
+        for column in columns:
+            self.facade_screens.apply_screen_is_missing_value(column)
+
+        #CHECK UNIQUE VALUES
+        self.facade_screens.apply_screen_is_not_unique('term_id')
+
+        #CHECK NOT DATE FORMAT VALUES
+        self.facade_screens.apply_screen_is_not_date_format('term_begin_date', '%Y-%m-%d')
+        self.facade_screens.apply_screen_is_not_date_format('term_end_date', '%Y-%m-%d')
+
+        self.data['term_begin_date'] = pd.to_datetime(self.data['term_begin_date'], format='%Y-%m-%d')
+        self.data['term_end_date'] = pd.to_datetime(self.data['term_end_date'], format='%Y-%m-%d')
+
+        #CHECK OUT OF BOUNDS VALUES
+        self.facade_screens.apply_screen_is_out_of_bounds_value('term_begin_date', pd.Timestamp('2020-01-01'), pd.Timestamp('2030-12-31'))
+        self.facade_screens.apply_screen_is_out_of_bounds_value('term_end_date', pd.Timestamp('2020-01-01'), pd.Timestamp('2030-12-31'))
+
+        #CHECK CRONOLOGICAL ORDER
+        self.facade_screens.apply_screen_is_lower_than('term_end_date', 'term_begin_date')
+
+        #CHECK OUT OF LIST VALUES
+        self.facade_screens.apply_screen_is_out_of_list_value('certificate_id', certificate_ids['certificate_id'].tolist())
+
+        self.errors = self.facade_screens.get_error_events_detail()
+        self.data = self.data.drop(columns=['__screen__'])
+
+        #ADD AUDIT FACT COLUMN
+        self.data['audit_passed'] = 'Sí'
+        audit_dim_assembler = AuditDimensionAssembler(self.errors, 'term_dummy')
+        unsolved_rows = audit_dim_assembler.get_unsolved_rows()
+        self.data.loc[self.data['term_id'].isin(unsolved_rows), 'audit_passed'] = 'No'
+
+    def export_data(self):
+
+        if self.errors is None:
+            data = self.data
+
+            conn = duckdb.connect("insurance_case.db")
+            conn.sql("CREATE OR REPLACE TABLE bronze.fact_term AS SELECT * FROM data")
+            conn.close()  
+
+class CieCsvExtractor(GenericCsvExtractor):
+
+    def extract_data(self, file_path):
+        print('Reading file: ', file_path)
+        self.data = pd.read_csv(file_path)
+        self.data = self.data.rename(columns={'cie_code': 'cie_id', 
+                                              'cie_name': 'cie_name'})
+
+    def screen_data(self):
+        print('Screening data...')
+
+        self.facade_screens.setup(data=self.data, table_name='cie_catalog', identifier='cie_id')
+        
+        #CHECK NULL VALUES
+        columns = ['cie_name']
+        for column in columns:
+            self.facade_screens.apply_screen_is_missing_value(column)
+
+        #CHECK UNIQUE VALUES
+        self.facade_screens.apply_screen_is_not_unique('cie_id')
+
+        self.errors = self.facade_screens.get_error_events_detail()
+        self.data = self.data.drop(columns=['__screen__'])
+
+    def export_data(self):
+
+        if self.errors is None:
+            data = self.data
+
+            conn = duckdb.connect("insurance_case.db")
+            conn.sql("CREATE OR REPLACE TABLE bronze.dim_cie AS SELECT * FROM data")
+            conn.close()
+
+        else:
+            raise Exception('Dimension data contains errors. Cannot export to datawarehouse.')
+
+class ConsultationsCsvExtractor(GenericCsvExtractor):
+
+    def extract_data(self, file_path):
+        print('Reading file: ', file_path)
+        self.data = pd.read_csv(file_path)
+        self.data = self.data.rename(columns={'id': 'consultation_id',
+                                              'certificate_number': 'certificate_id',
+                                              'fecha_consulta': 'consultation_date',
+                                              'specialty': 'specialty',
+                                              'placed_by': 'placed_by',
+                                              'day_note_consultation_observation': 'consultation_observation',
+                                              'day_note_next_consultation_pending': 'next_consultation_pending',
+                                              'day_note_needs_prescription_or_medical_order': 'prescription_or_medical_order',
+                                              'patiend_goal': 'patient_goal',
+                                              'specialist_goal': 'specialist_goal',
+                                              'pause_consultations': 'pause_consultations'})
+
+        self.data.loc[self.data['pause_consultations'] == 'no', 'pause_consultations'] = 'No'
+        self.data.loc[self.data['pause_consultations'] == 'yes', 'pause_consultations'] = 'Sí'
+        self.data['pause_consultations'] = self.data['pause_consultations'].fillna('Sin especificar')
+
+        self.data.loc[self.data['prescription_or_medical_order'] == 'none', 'prescription_or_medical_order'] = 'Ninguno'
+        self.data.loc[self.data['prescription_or_medical_order'] == 'medicalOrder', 'prescription_or_medical_order'] = 'Orden Médica'
+        self.data.loc[self.data['prescription_or_medical_order'] == 'medicalPrescription', 'prescription_or_medical_order'] = 'Receta Médica'
+        self.data.loc[self.data['prescription_or_medical_order'] == 'both', 'prescription_or_medical_order'] = 'Ambos'
+        self.data['prescription_or_medical_order'] = self.data['prescription_or_medical_order'].fillna('Sin Especificar')
+
+        self.data.loc[self.data['specialty'] == 'general_medicine', 'specialty'] = 'Medicina General'
+        self.data.loc[self.data['specialty'] == 'geriatrics', 'specialty'] = 'Geriatría'
+        self.data.loc[self.data['specialty'] == 'gerontology', 'specialty'] = 'Gerontología'
+        self.data.loc[self.data['specialty'] == 'nutrition', 'specialty'] = 'Nutrición'
+
+    def screen_data(self):
+        print('Screening data...')
+
+        conn = duckdb.connect("insurance_case.db")
+        certificate_ids = conn.sql("SELECT certificate_id FROM silver.dim_certificate").df()
+        conn.close()
+
+        self.facade_screens.setup(data=self.data, table_name='consultations', identifier='consultation_id')
+        
+        #CHECK NULL VALUES
+        columns = ['certificate_id', 'consultation_date', 'specialty', 'placed_by', 'pause_consultations', 'prescription_or_medical_order']
+        for column in columns:
+            self.facade_screens.apply_screen_is_missing_value(column)
+
+        #CHECK UNIQUE VALUES
+        self.facade_screens.apply_screen_is_not_unique('consultation_id')
+
+        #CHECK NOT DATE FORMAT VALUES
+        self.facade_screens.apply_screen_is_not_date_format('consultation_date', '%Y-%m-%d')
+
+        self.data['consultation_date'] = pd.to_datetime(self.data['consultation_date'], format='%Y-%m-%d')
+
+        #CHECK OUT OF BOUNDS VALUES
+        self.facade_screens.apply_screen_is_out_of_bounds_value('consultation_date', pd.Timestamp('2020-01-01'), pd.Timestamp('2030-12-31'))
+
+        #CHECK OUT OF LIST VALUES
+        self.facade_screens.apply_screen_is_out_of_list_value('certificate_id', certificate_ids['certificate_id'].tolist())
+        self.facade_screens.apply_screen_is_out_of_list_value('pause_consultations', ['Sí', 'No', 'Sin especificar'])
+        self.facade_screens.apply_screen_is_out_of_list_value('prescription_or_medical_order', ['Sin Especificar', 'Orden Médica', 'Receta Médica', 'Ambos', 'Ninguno'])
+        self.facade_screens.apply_screen_is_out_of_list_value('specialty', ['Medicina General', 'Geriatría', 'Gerontología', 'Nutrición'])
+
+        self.errors = self.facade_screens.get_error_events_detail()
+        self.data = self.data.drop(columns=['__screen__'])
+
+
+        #ADD AUDIT FACT COLUMN
+        self.data['audit_passed'] = 'Sí'
+        audit_dim_assembler = AuditDimensionAssembler(self.errors, 'term_dummy')
+        unsolved_rows = audit_dim_assembler.get_unsolved_rows()
+        self.data.loc[self.data['consultation_id'].isin(unsolved_rows), 'audit_passed'] = 'No'
+
+    def export_data(self):
+
+        if self.errors is None:
+            data = self.data
+
+            conn = duckdb.connect("insurance_case.db")
+            conn.sql("CREATE OR REPLACE TABLE bronze.fact_consultation AS SELECT * FROM data")
+            conn.close()  
+
+class ClaimsCsvExtractor(GenericCsvExtractor):
+
+    def extract_data(self, file_path):
+        print('Reading file: ', file_path)
+        self.data = pd.read_csv(file_path)
+        self.data = self.data.rename(columns={'SINIESTRO': 'claim_id',
+                                              'STATE': 'state',
+                                              'CIE10': 'cie_id',
+                                              'DIAGNOSIS': 'diagnosis',
+                                              'FECHA_OCURRIDO': 'incident_date',
+                                              'FECHA_PAGO': 'payment_date',
+                                              'FECHA_PRIMERGASTO': 'first_expense_date',
+                                              'OCURRIDO': 'ocurrido',
+                                              'PAGOS': 'payments',
+                                              'COASEGURO': 'coinsurance',
+                                              'IVAREC': 'ivarec',
+                                              'DEDUCIBLE': 'deductible',
+                                              'CAUSA': 'incident_reason',
+                                              'CVE_MES': 'cve_mes',
+                                              'MES_CONT': 'month_cont_date',
+                                              'TIPO_PAGO': 'payment_type',
+                                              'CLASF_PROV': 'provider',
+                                              'NumCertificado': 'certificate_number'                                             
+                                              }) 
+
+        self.data['certificate_number'] = self.data['certificate_number'].astype(str)
+        self.data['cie_id'] = self.data['cie_id'].str.replace('.','', regex=False)
+
+        self.data.loc[self.data['incident_reason'] == 'ENFERMEDAD', 'incident_reason'] = 'Enfermedad'
+        self.data.loc[self.data['incident_reason'] == 'ACCIDENTE', 'incident_reason'] = 'Accidente'
+
+        self.data.loc[self.data['payment_type'] == 'PAGO DIRECTO', 'payment_type'] = 'Pago Directo'
+
+        self.data.loc[self.data['payment_date'] == '45491', 'payment_date'] = None
+
+        for column in ['ocurrido', 'payments', 'coinsurance', 'ivarec', 'deductible']:
+            self.data[column] = self.data[column].astype(str)
+            self.data[column] = self.data[column].str.replace('.', '', regex=False)
+            self.data[column] = self.data[column].str.replace(',', '.', regex=False)
+            self.data[column] = pd.to_numeric(self.data[column], errors='raise')
+
+    def screen_data(self):
+        print('Screening data...')
+
+        conn = duckdb.connect("insurance_case.db")
+        certificate_numbers = conn.sql("SELECT certificate_number FROM silver.dim_certificate").df()
+        conn.close()
+        
+        self.facade_screens.setup(data=self.data, table_name='claims', identifier='claim_id')
+        
+        #CHECK NULL VALUES
+        columns = ['state', 'cie_id', 'diagnosis', 'incident_date', 'payments', 'coinsurance',
+                   'ivarec', 'deductible', 'incident_reason', 'cve_mes', 'month_cont_date', 'payment_type', 'provider', 'certificate_number']
+        for column in columns:
+            self.facade_screens.apply_screen_is_missing_value(column)
+
+        #CHECK UNIQUE VALUES
+        self.facade_screens.apply_screen_is_not_unique('claim_id')
+
+        #CHECK NOT DIGIT STRING VALUES
+        self.facade_screens.apply_screen_is_not_digit_string('certificate_number', 6)
+
+        #CHECK NOT DATE FORMAT VALUES
+        self.facade_screens.apply_screen_is_not_date_format('incident_date', '%d/%m/%Y')
+        self.facade_screens.apply_screen_is_not_date_format('payment_date', '%d/%m/%Y')
+        self.facade_screens.apply_screen_is_not_date_format('first_expense_date', '%d/%m/%Y')
+        self.facade_screens.apply_screen_is_not_date_format('month_cont_date', '%d/%m/%Y')
+
+        self.data['incident_date'] = pd.to_datetime(self.data['incident_date'], format='%d/%m/%Y')
+        self.data['payment_date'] = pd.to_datetime(self.data['payment_date'], format='%d/%m/%Y')
+        self.data['first_expense_date'] = pd.to_datetime(self.data['first_expense_date'], format='%d/%m/%Y')
+        self.data['month_cont_date'] = pd.to_datetime(self.data['month_cont_date'], format='%d/%m/%Y')
+
+        #CHECK OUT OF BOUNDS VALUES
+        self.facade_screens.apply_screen_is_out_of_bounds_value('incident_date', pd.Timestamp('2020-01-01'), pd.Timestamp('2030-12-31'))
+        self.facade_screens.apply_screen_is_out_of_bounds_value('payment_date', pd.Timestamp('2020-01-01'), pd.Timestamp('2030-12-31'))
+        self.facade_screens.apply_screen_is_out_of_bounds_value('first_expense_date', pd.Timestamp('2020-01-01'), pd.Timestamp('2030-12-31'))
+        self.facade_screens.apply_screen_is_out_of_bounds_value('month_cont_date', pd.Timestamp('2020-01-01'), pd.Timestamp('2030-12-31'))
+
+        self.facade_screens.apply_screen_is_out_of_bounds_value('ocurrido', -1000000, 10000000)
+        self.facade_screens.apply_screen_is_out_of_bounds_value('payments', 0, 10000000)
+        self.facade_screens.apply_screen_is_out_of_bounds_value('coinsurance', 0, 1000000)
+        self.facade_screens.apply_screen_is_out_of_bounds_value('ivarec', 0, 1000000)
+        self.facade_screens.apply_screen_is_out_of_bounds_value('deductible', 0, 1000000)
+
+        #CHECK CRONOLOGICAL ORDER
+        self.facade_screens.apply_screen_is_lower_than('month_cont_date', 'payment_date')
+        self.facade_screens.apply_screen_is_lower_than('payment_date', 'first_expense_date')
+        self.facade_screens.apply_screen_is_lower_than('first_expense_date', 'incident_date')
+
+        #CHECK OUT OF LIST VALUES
+        self.facade_screens.apply_screen_is_out_of_list_value('certificate_number', certificate_numbers['certificate_number'].tolist())
+        self.facade_screens.apply_screen_is_out_of_list_value('incident_reason', ['Enfermedad', 'Accidente'])
+        self.facade_screens.apply_screen_is_out_of_list_value('payment_type', ['Pago Directo'])
+
+        self.errors = self.facade_screens.get_error_events_detail()
+        self.data = self.data.drop(columns=['__screen__'])
+
+        #ADD AUDIT FACT COLUMN
+        self.data['audit_passed'] = 'Sí'
+        audit_dim_assembler = AuditDimensionAssembler(self.errors, 'term_dummy')
+        unsolved_rows = audit_dim_assembler.get_unsolved_rows()
+        self.data.loc[self.data['claim_id'].isin(unsolved_rows), 'audit_passed'] = 'No'
+
+    def export_data(self):
+
+        if self.errors is None:
+            data = self.data
+
+            conn = duckdb.connect("insurance_case.db")
+            conn.sql("CREATE OR REPLACE TABLE bronze.fact_claim AS SELECT * FROM data")
+            conn.close() 
+
+
 
 #############################################################################
 
@@ -236,7 +535,10 @@ class ValidatorIsNotDateFormat(AbstractValidator):
     def validate(self, **kwargs):
 
         value = kwargs.get('value', None)
-        date_format = kwargs.get('date_format', None)       
+        date_format = kwargs.get('date_format', None)  
+
+        if pd.isnull(value):
+            return False     
 
         try:
             datetime.datetime.strptime(value, date_format)
@@ -245,6 +547,23 @@ class ValidatorIsNotDateFormat(AbstractValidator):
         except ValueError:
             result = True
         
+        return result
+
+class ValidatorIsLowerThan(AbstractValidator):
+
+    def validate(self, **kwargs):
+
+        value_a = kwargs.get('value_a', None)
+        value_b = kwargs.get('value_b', None) 
+      
+        result = False
+
+        if pd.isnull(value_a) or pd.isnull(value_b):
+            return result
+
+        if value_a < value_b:
+            result = True
+
         return result
     
 
@@ -301,14 +620,16 @@ class ValidationScreenIsNotDateFormat(AbstractValidationScreen):
         validator = ValidatorIsNotDateFormat()
         results = array.apply(lambda x: validator.validate(value=x, date_format=date_format))
         return results
+
+class ValidatorScreenIsLowerThan(AbstractValidationScreen):
+
+    def apply_validation(self, array_a, array_b):
+        validator = ValidatorIsLowerThan()
+        results = pd.Series(zip(array_a, array_b)).apply(lambda x: validator.validate(value_a=x[0], value_b=x[1]))
+        return results
     
     
-#class ValidationScreenHasIncongruentInverses(AbstractValidationScreen):
-
-#    def apply_validation(self, array_a, array_b):
-
- #       results = pd.Series(zip(array_a, array_b)).apply(lambda x: self.validator.validate(value_a=x[0], value_b=x[1]))
- #       return results
+#FACADE FOR SCREENS
 
 class FacadeValidationScreens():
 
@@ -320,6 +641,7 @@ class FacadeValidationScreens():
         self.screen_is_out_of_list_value = ValidationScreenIsOutOfListValue()
         self.screen_is_not_digit_string = ValidationScreenIsNotDigitString()
         self.screen_is_not_date_format = ValidationScreenIsNotDateFormat()
+        self.screen_is_lower_than = ValidatorScreenIsLowerThan()
 
     def setup(self, data, table_name, identifier):
         self.data = data
@@ -401,6 +723,14 @@ class FacadeValidationScreens():
         errors = self.data.loc[self.data['__screen__'] == True][[self.identifier, column]].copy()
         self.ensemble_error_event_detail(errors, column, screen_id)
 
+    def apply_screen_is_lower_than(self, column, reference_column):
+        
+        screen_id = 7        
+        self.data['__screen__'] = self.screen_is_lower_than.apply_validation(self.data[column], self.data[reference_column])
+        
+        errors = self.data.loc[self.data['__screen__'] == True][[self.identifier, column]].copy()
+        self.ensemble_error_event_detail(errors, column, screen_id)
+
 #############################################################################
 
 ## SUBSYSTEM 05 FOR LOGGING ERROR EVENTS
@@ -427,6 +757,41 @@ class ErrorEventLogsGenerator(AbtractErrorEventLogsGenerator):
                 conn.sql("INSERT INTO governance.fact_error_event SELECT * FROM error_events")
                 conn.sql("INSERT INTO governance.fact_error_event_detail SELECT * FROM error_events_detail")
                 conn.close()
+
+#############################################################################
+
+## SUBSYSTEM 06 FOR AUDIT DIMENSION ASSEMBLE
+class AuditDimensionAssembler():
+
+    def __init__(self, error_detail_table, table_name):
+        self.error_detail_table = error_detail_table
+        self.table_name = table_name
+        self.etl_version = None
+
+    def get_unsolved_rows(self):
+
+        if self.error_detail_table is None:
+            return []
+
+        unsolved_rows = self.error_detail_table.loc[self.error_detail_table['error_condition'] == 'Sin Resolver']
+        unsolved_rows = unsolved_rows.loc[unsolved_rows['table_name'] == self.table_name]
+        unsolved_rows = unsolved_rows['record_identifier'].unique().tolist()
+
+        return unsolved_rows
+
+#############################################################################
+
+## SUBSYSTEM 10 FOR SURROGATE KEY GENERATION
+class AbstractSurrogateKeyGenerator(ABC):
+
+    @abstractmethod
+    def generate_surrogated_keys(self, n_rows: int):
+        pass
+
+class SurrogateKeyGenerator(AbstractSurrogateKeyGenerator):
+
+    def generate_surrogated_keys(self, n_rows):
+        return np.arange(1, n_rows + 1)
 
 #############################################################################
 
@@ -523,14 +888,16 @@ class SpecialDimensionManager(AbstractSpecialDimensionManager):
     def create_screen_dimension(self):
 
         dim_screen = pd.DataFrame({
-            'screen_id': [1, 2, 3, 4, 5, 6],
+            'screen_id': [1, 2, 3, 4, 5, 6, 7],
+            'screen_type': ['Columnar', 'Columnar', 'Estructural', 'Columnar', 'Columnar',
+                             'Estructural', 'Negocio'],
             'screen_name': ['Valor nulo', 'Valor fuera de intervalo', 'Valor fuera de lista', 
                             'Cadena no compuesta por dígitos ', 'Fecha con formato incorrecto', 
-                            'Valor no único'],
+                            'Valor no único', 'Valor menor que otro valor'],
             'screen_description': ['Valor nulo', 'Valor fuera de intervalo', 'Valor fuera de lista', 
                             'Cadena no compuesta por dígitos ', 'Fecha con formato incorrecto', 
-                            'Valor no único'],
-            'etl_module': ['v0.0.1'] * 6
+                            'Valor no único', 'Valor menor que otro valor'],
+            'etl_module': ['v0.0.1'] * 7
         })
 
         self.dim_screen = dim_screen 
@@ -538,6 +905,83 @@ class SpecialDimensionManager(AbstractSpecialDimensionManager):
 #############################################################################
 
 ## SUBSYSTEM 17 FOR DIMENSION MANAGEMENT
+class AbtractDimensionBuilder(ABC):
+
+    def __init__(self):
+        self.silver_dimension = None
+        self.surrogate_key_generator = SurrogateKeyGenerator()
+
+    @abstractmethod
+    def build_dimension(self):
+        pass
+
+    @abstractmethod
+    def export_dimension(self):
+        pass
+
+class CertificatesDimensionBuilder(AbtractDimensionBuilder):
+    
+    def build_dimension(self):
+
+        conn = duckdb.connect("insurance_case.db")
+        silver_customer_birth_date = conn.sql("SELECT * FROM silver.dim_birth_date").df()
+        bronze_dimension = conn.sql("SELECT * FROM bronze.dim_certificate").df()
+        conn.close()
+
+        silver_dimension = bronze_dimension.copy()
+        silver_dimension['name'] = silver_dimension['name'].apply(lambda x: x[0:3] + '****')
+        silver_dimension['email'] = silver_dimension['email'].apply(lambda x: '****' + x[x.find('@'):])
+
+        silver_dimension = silver_dimension.merge(silver_customer_birth_date[['birth_date_id', 'date']],
+                                                  left_on='birth_date',
+                                                  right_on='date',
+                                                  how='inner')
+
+        if not silver_dimension.shape[0] == bronze_dimension.shape[0]:
+            raise Exception('Data loss detected during the dimension merge process')
+
+        keys = self.surrogate_key_generator.generate_surrogated_keys(silver_dimension.shape[0])
+        silver_dimension['surrogated_id'] = keys
+
+        columns_order = ['surrogated_id', 'certificate_id', 'name', 'email', 'age', 'city',
+                        'gender', 'certificate_number', 'birth_date_id']
+        self.silver_dimension = silver_dimension[columns_order]
+
+    def export_dimension(self):
+
+        silver_dimension = self.silver_dimension
+        
+        conn = duckdb.connect("insurance_case.db")
+        conn.sql("CREATE OR REPLACE TABLE silver.dim_certificate AS SELECT * FROM silver_dimension")
+        conn.close()
+
+class CieDimensionBuilder(AbtractDimensionBuilder):
+    
+    def build_dimension(self):
+
+        conn = duckdb.connect("insurance_case.db")
+        bronze_dimension = conn.sql("SELECT * FROM bronze.dim_cie").df()
+        conn.close()
+
+        silver_dimension = bronze_dimension.copy()
+
+        keys = self.surrogate_key_generator.generate_surrogated_keys(silver_dimension.shape[0])
+        silver_dimension['surrogated_id'] = keys
+
+        if not silver_dimension.shape[0] == bronze_dimension.shape[0]:
+            raise Exception('Data loss detected during the dimension merge process')
+
+        columns_order = ['surrogated_id', 'cie_id', 'cie_name']
+        self.silver_dimension = silver_dimension[columns_order]
+
+    def export_dimension(self):
+
+        silver_dimension = self.silver_dimension
+        
+        conn = duckdb.connect("insurance_case.db")
+        conn.sql("CREATE OR REPLACE TABLE silver.dim_cie AS SELECT * FROM silver_dimension")
+        conn.close()
+
 class AbstractDimensionManager(ABC):
     
     @abstractmethod
@@ -546,6 +990,10 @@ class AbstractDimensionManager(ABC):
 
     @abstractmethod
     def init_screen_dimension(self):
+        pass
+
+    @abstractmethod
+    def build_dimension(self, dimension_builder: AbtractDimensionBuilder):
         pass
 
 class DimensionManager(AbstractDimensionManager):
@@ -562,6 +1010,118 @@ class DimensionManager(AbstractDimensionManager):
         conn.sql("CREATE OR REPLACE TABLE silver.dim_date AS SELECT * FROM dim_date")
         conn.close()
 
+    def init_date_view_dimensions(self):
+
+        conn = duckdb.connect("insurance_case.db")
+
+        conn.sql("""CREATE OR REPLACE VIEW silver.dim_birth_date AS
+            SELECT 
+                date_id AS birth_date_id,
+                date,
+                date_name,
+                day,
+                month,
+                year,
+                year_month,
+                quarter_year
+            FROM silver.dim_date
+            WHERE date_id NOT IN (-1, -2)""")
+
+        conn.sql("""CREATE OR REPLACE VIEW silver.dim_term_begin_date AS
+            SELECT
+                date_id AS term_begin_date_id,
+                date, date_name,
+                day, month, year, day_of_week,
+                day_name, month_name, quarter,
+                weekday_indicator, week_of_year,
+                is_end_of_month, is_end_of_quarter,
+                is_end_of_year, quarter_name,
+                year_month, quarter_year,
+                holiday_indicator
+            FROM silver.dim_date
+            WHERE date_id NOT IN (-1, -2)""")
+
+        conn.sql("""CREATE OR REPLACE VIEW silver.dim_term_end_date AS
+            SELECT
+                date_id AS term_end_date_id,
+                date, date_name,
+                day, month, year, day_of_week,
+                day_name, month_name, quarter,
+                weekday_indicator, week_of_year,
+                is_end_of_month, is_end_of_quarter,
+                is_end_of_year, quarter_name,
+                year_month, quarter_year,
+                holiday_indicator
+            FROM silver.dim_date
+            WHERE date_id NOT IN (-1, -2)""")
+
+        conn.sql("""CREATE OR REPLACE VIEW silver.dim_consultation_date AS
+            SELECT
+                date_id AS consultation_date_id,
+                date, date_name,
+                day, month, year, day_of_week,
+                day_name, month_name, quarter,
+                weekday_indicator, week_of_year,
+                quarter_name,
+                year_month, quarter_year,
+                holiday_indicator
+            FROM silver.dim_date
+            WHERE date_id NOT IN (-1, -2)""")
+
+        conn.sql("""CREATE OR REPLACE VIEW silver.dim_incident_date AS
+            SELECT
+                date_id AS incident_date_id,
+                date, date_name,
+                day, month, year, day_of_week,
+                day_name, month_name, quarter,
+                weekday_indicator, week_of_year,
+                is_end_of_month, is_end_of_quarter,
+                is_end_of_year, quarter_name,
+                year_month, quarter_year,
+                holiday_indicator
+            FROM silver.dim_date""")
+
+        conn.sql("""CREATE OR REPLACE VIEW silver.dim_payment_date AS
+            SELECT
+                date_id AS payment_date_id,
+                date, date_name,
+                day, month, year, day_of_week,
+                day_name, month_name, quarter,
+                weekday_indicator, week_of_year,
+                is_end_of_month, is_end_of_quarter,
+                is_end_of_year, quarter_name,
+                year_month, quarter_year,
+                holiday_indicator
+            FROM silver.dim_date""")
+
+        conn.sql("""CREATE OR REPLACE VIEW silver.dim_first_expense_date AS
+            SELECT
+                date_id AS first_expense_date_id,
+                date, date_name,
+                day, month, year, day_of_week,
+                day_name, month_name, quarter,
+                weekday_indicator, week_of_year,
+                is_end_of_month, is_end_of_quarter,
+                is_end_of_year, quarter_name,
+                year_month, quarter_year,
+                holiday_indicator
+            FROM silver.dim_date""")
+
+        conn.sql("""CREATE OR REPLACE VIEW silver.month_cont_date AS
+            SELECT
+                date_id AS month_cont_date_id,
+                date, date_name,
+                day, month, year, day_of_week,
+                day_name, month_name, quarter,
+                weekday_indicator, week_of_year,
+                is_end_of_month, is_end_of_quarter,
+                is_end_of_year, quarter_name,
+                year_month, quarter_year,
+                holiday_indicator
+            FROM silver.dim_date""")
+
+        conn.close()
+
     def init_screen_dimension(self):
         
         self.special_dimension_manager.create_screen_dimension()
@@ -571,8 +1131,133 @@ class DimensionManager(AbstractDimensionManager):
         conn.sql("CREATE OR REPLACE TABLE governance.dim_screen AS SELECT * FROM dim_screen")
         conn.close()
 
+    def build_dimension(self, dimension_builder: AbtractDimensionBuilder):
+        
+        dimension_builder.build_dimension()
+        dimension_builder.export_dimension()
+
 #############################################################################
 
+## SUBSYSTEM 18 FOR FACT MANAGEMENT
+class AbtractFactBuilder(ABC):
+
+    def __init__(self):
+        self.silver_fact = None
+
+    @abstractmethod
+    def build_fact(self):
+        pass
+
+    @abstractmethod
+    def export_fact(self):
+        pass
+
+class TermFactBuilder(AbtractFactBuilder):
+    
+    def build_fact(self):
+
+        conn = duckdb.connect("insurance_case.db")
+        silver_term_begin_date = conn.sql("SELECT * FROM silver.dim_term_begin_date").df()
+        silver_term_end_date = conn.sql("SELECT * FROM silver.dim_term_end_date").df()
+        silver_certificate_id = conn.sql("SELECT surrogated_id AS surrogated_certificate_id, certificate_id FROM silver.dim_certificate").df()
+        bronze_fact = conn.sql("SELECT * FROM bronze.fact_term").df()
+        conn.close()
+
+        silver_fact = bronze_fact.copy()
+        silver_fact = silver_fact.loc[silver_fact['audit_passed'] == 'Sí']
+
+        shape_01 = silver_fact.shape[0]
+
+        silver_fact = silver_fact.merge(silver_term_begin_date[['term_begin_date_id', 'date']],
+                                        left_on='term_begin_date',
+                                        right_on='date',
+                                        how='inner')
+
+        silver_fact = silver_fact.drop(columns=['term_begin_date', 'date'])
+
+        silver_fact = silver_fact.merge(silver_term_end_date[['term_end_date_id', 'date']],
+                                        left_on='term_end_date',
+                                        right_on='date',
+                                        how='inner')
+
+        silver_fact = silver_fact.drop(columns=['term_end_date', 'date'])
+
+        silver_fact = silver_fact.merge(silver_certificate_id, on='certificate_id', how='inner')
+
+        silver_fact = silver_fact.drop(columns=['certificate_id'])
+        shape_02 = silver_fact.shape[0]
+
+        if not shape_01 == shape_02:
+            raise Exception('Data loss detected during the fact merge process')
+
+        columns_order = ['term_id', 'surrogated_certificate_id', 'term_begin_date_id', 'term_end_date_id', 'audit_passed']
+        self.silver_fact = silver_fact[columns_order]
+
+    def export_fact(self):
+
+        silver_fact = self.silver_fact
+        
+        conn = duckdb.connect("insurance_case.db")
+        conn.sql("CREATE OR REPLACE TABLE silver.fact_term AS SELECT * FROM silver_fact")
+        conn.close()
+
+class ConsultationFactBuilder(AbtractFactBuilder):
+    
+    def build_fact(self):
+
+        conn = duckdb.connect("insurance_case.db")
+        silver_consultation_date = conn.sql("SELECT * FROM silver.dim_consultation_date").df()
+        silver_certificate_id = conn.sql("SELECT surrogated_id AS surrogated_certificate_id, certificate_id FROM silver.dim_certificate").df()
+        bronze_fact = conn.sql("SELECT * FROM bronze.fact_consultation").df()
+        conn.close()
+
+        silver_fact = bronze_fact.copy()
+        silver_fact = silver_fact.loc[silver_fact['audit_passed'] == 'Sí']
+
+        shape_01 = silver_fact.shape[0]
+
+        silver_fact = silver_fact.merge(silver_consultation_date[['consultation_date_id', 'date']],
+                                        left_on='consultation_date',
+                                        right_on='date',
+                                        how='inner')
+
+        silver_fact = silver_fact.drop(columns=['consultation_date', 'date'])
+
+        silver_fact = silver_fact.merge(silver_certificate_id, on='certificate_id', how='inner')
+
+        silver_fact = silver_fact.drop(columns=['certificate_id'])
+        shape_02 = silver_fact.shape[0]
+
+        if not shape_01 == shape_02:
+            raise Exception('Data loss detected during the fact merge process')
+
+        columns_order = ['consultation_id', 'surrogated_certificate_id', 'consultation_date_id', 'specialty',
+                    	 'placed_by', 'consultation_observation', 'next_consultation_pending', 'prescription_or_medical_order',
+                         'patient_goal', 'specialist_goal', 'pause_consultations', 'audit_passed']
+        self.silver_fact = silver_fact[columns_order]
+
+    def export_fact(self):
+
+        silver_fact = self.silver_fact
+        
+        conn = duckdb.connect("insurance_case.db")
+        conn.sql("CREATE OR REPLACE TABLE silver.fact_consultation AS SELECT * FROM silver_fact")
+        conn.close()
+
+class AbstractFactManager(ABC):
+    
+    @abstractmethod
+    def build_fact(self, fact_builder: AbtractFactBuilder):
+        pass
+
+class FactManager(AbstractFactManager):
+
+    def build_fact(self, fact_builder: AbtractFactBuilder):
+        
+        fact_builder.build_fact()
+        fact_builder.export_fact()
+
+#############################################################################
 
 
 
@@ -592,9 +1277,12 @@ def init_datawarehouse_resources():
 def generate_dim_date():
 
     dimension_manager = DimensionManager()
-    dimension_manager.init_date_dimension()
 
+    dimension_manager.init_date_dimension()
     logging.info("Date dimension generated and stored in silver.dim_date table")
+
+    dimension_manager.init_date_view_dimensions()
+    logging.info("Date view dimensions generated in silver schema")
 
     return
 
@@ -608,12 +1296,127 @@ def generate_dim_screen():
 
     return
 
+## CERTIFICATES
 @dg.asset(name='extract_certificates', group_name='bronze', 
           deps=['generate_dim_date', 'generate_dim_screen'])
 def extract_certificates():
 
-    path = '/home/armando/git/insurance_case/datalake/raw/certificate_dummy.csv'
+    path = '../datalake/raw/certificate_dummy.csv'
     extractor = CertificatesCsvExtractor()
+    extractor.extract_data(path)
+    extractor.screen_data()
+
+    error_events_generator = ErrorEventLogsGenerator(error_events_detail=extractor.errors)
+    error_events_generator.export_error_events()
+
+    extractor.export_data()
+
+    return
+
+@dg.asset(name='load_dim_certificate', group_name='silver', 
+          deps=['extract_certificates'])
+def load_dim_certificate():
+
+    certificate_dimension_builder = CertificatesDimensionBuilder()
+
+    dimension_manager = DimensionManager()
+    dimension_manager.build_dimension(certificate_dimension_builder)
+
+    return
+
+## CIE
+@dg.asset(name='extract_cie', group_name='bronze', 
+          deps=['generate_dim_date', 'generate_dim_screen'])
+def extract_cie():
+
+    path = '../datalake/raw/cat_cie_10.csv'
+    extractor = CieCsvExtractor()
+    extractor.extract_data(path)
+    extractor.screen_data()
+
+    error_events_generator = ErrorEventLogsGenerator(error_events_detail=extractor.errors)
+    error_events_generator.export_error_events()
+
+    extractor.export_data()
+
+    return
+
+@dg.asset(name='load_dim_cie', group_name='silver', 
+          deps=['extract_cie'])
+def load_dim_cie():
+
+    cie_dimension_builder = CieDimensionBuilder()
+
+    dimension_manager = DimensionManager()
+    dimension_manager.build_dimension(cie_dimension_builder)
+
+    return
+
+
+## TERMS
+@dg.asset(name='extract_terms', group_name='bronze', 
+          deps=['load_dim_cerfificate'])
+def extract_terms():
+
+    path = '../datalake/raw/terms_dummy.csv'
+    extractor = TermsCsvExtractor()
+    extractor.extract_data(path)
+    extractor.screen_data()
+
+    error_events_generator = ErrorEventLogsGenerator(error_events_detail=extractor.errors)
+    error_events_generator.export_error_events()
+
+    extractor.export_data()
+
+    return
+
+@dg.asset(name='load_fact_term', group_name='silver', 
+          deps=['extract_terms'])
+def load_fact_term():
+
+    term_fact_builder = TermFactBuilder()
+
+    fact_manager = FactManager()
+    fact_manager.build_fact(term_fact_builder)
+
+    return
+
+
+## CONSULTATIONS
+@dg.asset(name='extract_consultations', group_name='bronze', 
+          deps=['load_dim_cerfificate', 'generate_dim_date'])
+def extract_consultations():
+
+    path = '../datalake/preprocessed/consultations_dummy.csv'
+    extractor = ConsultationsCsvExtractor()
+    extractor.extract_data(path)
+    extractor.screen_data()
+
+    error_events_generator = ErrorEventLogsGenerator(error_events_detail=extractor.errors)
+    error_events_generator.export_error_events()
+
+    extractor.export_data()
+
+    return
+
+@dg.asset(name='load_fact_consultation', group_name='silver', 
+          deps=['extract_consultations'])
+def load_fact_consultation():
+
+    consultation_fact_builder = ConsultationFactBuilder()
+
+    fact_manager = FactManager()
+    fact_manager.build_fact(consultation_fact_builder)
+
+    return
+
+## CLAIMS
+@dg.asset(name='extract_claims', group_name='bronze', 
+          deps=['load_dim_cerfificate', 'generate_dim_date'])
+def extract_claims():
+
+    path = '../datalake/raw/claims_dummy.csv'
+    extractor = ClaimsCsvExtractor()
     extractor.extract_data(path)
     extractor.screen_data()
 

@@ -1,0 +1,9 @@
+[32m2025-10-26 00:50:53 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - babf9c9a-ecc9-4ae9-b702-a09f663940f1 - 3295225 - LOGS_CAPTURED - Started capturing logs in process (pid: 3295225).
+[32m2025-10-26 00:50:53 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - babf9c9a-ecc9-4ae9-b702-a09f663940f1 - 3295225 - extract_claims - STEP_START - Started execution of step "extract_claims".
+INFO: Context impl SQLiteImpl.
+INFO: Will assume non-transactional DDL.
+[32m2025-10-26 00:50:53 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - babf9c9a-ecc9-4ae9-b702-a09f663940f1 - 3295225 - extract_claims - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+[32m2025-10-26 00:50:53 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - babf9c9a-ecc9-4ae9-b702-a09f663940f1 - extract_claims - Writing file at: /home/armando/git/insurance_case/dagster-quickstart/.tmp_dagster_home_kqk323qz/storage/extract_claims using PickledObjectFilesystemIOManager...
+[32m2025-10-26 00:50:53 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - babf9c9a-ecc9-4ae9-b702-a09f663940f1 - 3295225 - extract_claims - ASSET_MATERIALIZATION - Materialized value extract_claims.
+[32m2025-10-26 00:50:53 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - babf9c9a-ecc9-4ae9-b702-a09f663940f1 - 3295225 - extract_claims - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+[32m2025-10-26 00:50:53 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - babf9c9a-ecc9-4ae9-b702-a09f663940f1 - 3295225 - extract_claims - STEP_SUCCESS - Finished execution of step "extract_claims" in 247ms.
