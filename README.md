@@ -58,7 +58,7 @@ La primera tabla contiene toda la información uno a uno correspondiente a la co
 - Campos textuales con objetivos del paciente y médico.
 - Campo textual con descripción de la consulta por parte del médico.
 
-La segunda tabla contiene una lista de diagnosticos derivados de la consulta médica.
+La segunda tabla contiene una lista de diagnósticos derivados de la consulta médica.
 
 - No tiene llave natural.
 - La relación Consulta-Diagnósticos es 1:n mediante el id de la consulta.
@@ -71,12 +71,11 @@ Contiene los reclamos hechos por los clientes asegurados para recibir algún pag
 - Llave natural: CLAIM ID
 - La relación Cértificados-Reclamos es 1:n mediante el número del certificado (en este caso no se usa el id)
 - Existen 32 valores para las provincias de España.
-- Contiene un diagnostico con clave CIE.
+- Contiene un diagnóstico con clave CIE.
 - Fechas de ocurrencia, primer gasto y pago, las cuales siguen un orden cronológico.
 - Campos de pagos y gastos, con valores que oscilan entre -85000 y 1000000 (con formato utilizado en España).
 - Campo de causa con posibles dos valores entre ACCIDENTE y ENFERMEDAD.
 - Tipo de pago, con un solo posible valor: PAGO DIRECTO.
-- Se encontro un solo valor para tipo de pago: PAGO DIRECTO
 - La columna NumCertificado es llave foranea hacia certificados (numero_certificado)
 - En general no habia valores nulos, pero se supondrá más adelante que algunos campos pueden tenerlos.
 
@@ -522,18 +521,51 @@ la cual está disponible en el enlace https://github.com/famenor/insurance_case/
 
 ## 4.- Estructura del Repositorio
 
+### Dagster
+
+En la carpeta dagster-quickstart se encuentran los archivos generados por Dagster, entre los archivos a destacar estan:
+
+- assets_raw_preprocessing.py contiene los dos preprocesamiendos para generar los archivos de consultas y diagnóstivos.
+- assets_silver.py contiene los procesos para generar las tablas de nivel bronce y plata, así como las clases con la lógica requerida (ver sección de mejoras).
+- insurance_case.db archivo de Duckdb con las tablas generadas.
+
+![](https://github.com/famenor/insurance_case/blob/main/pictures/repositorio_01.jpg)
+
+El linaje de los procesos es el siguiente:
+
+![](https://github.com/famenor/insurance_case/blob/main/pictures/dagster.jpg)
+
+### Datalake
+
+Contiene los archivos de insumo y los archivos entregables.
+
+![](https://github.com/famenor/insurance_case/blob/main/pictures/repositorio_02.jpg)
+
+### DBT
+
+Contiene los archivos generados por DBT y los modelos para generar las tablas oro.
+
+![](https://github.com/famenor/insurance_case/blob/main/pictures/repositorio_03.jpg)
+
+## Otros archivos
+
+- La carpeta pictures contiene las imagenes de apoyo para este documento.
+- El cuaderno appendix_a_profiling.ipynb contiene el detalle del perfilamiento de la Sección 1.
+
+![](https://github.com/famenor/insurance_case/blob/main/pictures/repositorio_04.jpg)
 
 ## 5 .- Discusión y Mejoras
 
 Hasta antes de realizar esta prueba, no había utilizado Dagster ni Duckdb; con DBT tenía poca experiencia, además de ello decidí incorporar algunos componentes que antes no había implementado como son el etiquetado de filas erroneas a partir de políticas de validación, manejo de llaves surrogadas y dimensiones especiales para fechas y auditoría. Las mejoras que veo son las siguientes:
 
-- Ahora considero que es factible implementar en DBT la generación de tablas a nivel plata, al principio solo consideraba que sería útil para el nivel oro.
-- Para el preprocesamiento, ensambles de auditoría y otros componentes considero que puede ser mejor usar otras herramientas.
+- Si los requerimientos a futuro no son demasiado complejos, se podría implementar en DBT la generación de tablas a nivel plata.
+- Para el preprocesamiento, ensambles de auditoría y otros componentes como la gestión de llaves subrrogadas o control de cambios considero que puede ser mejor usar otras herramientas.
 - Entender mejor los componentes de Dagster y usarlos adecuadamente.
 - Modularizar mejor el proyecto, acomodar las clases implementadas en archivos para cada subsistema.
 - Los campos de texto capturado son muy importantes en el sector médico, sí es importante incorporar módulos para el analisis inteligente de texto y extracción de rasgos.
-- El catálogo del CIE parece tener diferenctes versiones o formatos, algunos de las patologías no pudieron ser asociadas por mínimas discrepancias en los códigos CIE.
+- El catálogo del CIE parece tener diferenctes versiones o formatos, algunas de las patologías no pudieron ser asociadas por mínimas discrepancias en los códigos CIE.
 - Incorporar pruebas unitarias y más pruebas de validación de datos, especialmente en DBT.
+
 
 
 
