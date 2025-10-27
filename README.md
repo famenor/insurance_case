@@ -370,6 +370,143 @@ Posteriormente, para el nivel plata, se sustituyeron llaves naturales foraneas p
 
 ![](https://github.com/famenor/insurance_case/blob/main/pictures/fact_claim_silver.jpg)
 
+## 3.- Tablas Oro
+
+Una vez cargadas las tablas de dimensiones y hechos en el almacén de datos se pueden generar productos de alto valor.
+
+### Interacción de Clientes
+
+Se comenzó con la interacción de clientes mediante la siguiente consulta en DBT:
+
+~~~sql
+WITH patient_data AS (
+    SELECT surrogated_id AS surrogated_certificate_id, name, certificate_number
+    FROM silver.dim_certificate
+),
+
+term_begin_interactions AS (
+    SELECT a.surrogated_certificate_id, 'Inicio de Cobertura' AS 'tipo_de_interaccion',
+           b.date_name AS 'fecha_de_interaccion'
+    FROM silver.fact_term a
+    INNER JOIN silver.dim_term_begin_date b
+    ON b.term_begin_date_id = a.term_begin_date_id
+),
+
+term_end_interactions AS (
+    SELECT a.surrogated_certificate_id, 'Fin de Cobertura' AS 'tipo_de_interaccion',
+           b.date_name AS 'fecha_de_interaccion'
+    FROM silver.fact_term a
+    INNER JOIN silver.dim_term_end_date b
+    ON b.term_end_date_id = a.term_end_date_id
+),
+
+consultations AS (
+    SELECT a.surrogated_certificate_id, 'Consulta Médica' AS 'tipo_de_interaccion',
+           b.date_name AS 'fecha_de_interaccion'
+    FROM silver.fact_consultation a
+    INNER JOIN silver.dim_consultation_date b
+    ON b.consultation_date_id = a.consultation_date_id
+),
+
+incidents AS (
+    SELECT a.surrogated_certificate_id, 'Incidente Reportado' AS 'tipo_de_interaccion',
+           b.date_name AS 'fecha_de_interaccion'
+    FROM silver.fact_claim a
+    INNER JOIN silver.dim_incident_date b
+    ON b.incident_date_id = a.incident_date_id
+),
+
+first_expenses AS (
+    SELECT a.surrogated_certificate_id, 'Primer Gasto' AS 'tipo_de_interaccion',
+           b.date_name AS 'fecha_de_interaccion'
+    FROM silver.fact_claim a
+    INNER JOIN silver.dim_first_expense_date b
+    ON b.first_expense_date_id = a.first_expense_date_id
+),
+
+payments AS (
+    SELECT a.surrogated_certificate_id, 'Pago Realizado' AS 'tipo_de_interaccion',
+           b.date_name AS 'fecha_de_interaccion'
+    FROM silver.fact_claim a
+    INNER JOIN silver.dim_payment_date b
+    ON b.payment_date_id = a.payment_date_id
+),
+
+interacciones AS (
+    SELECT * FROM term_begin_interactions
+    UNION ALL
+    SELECT * FROM term_end_interactions
+    UNION ALL
+    SELECT * FROM consultations
+    UNION ALL
+    SELECT * FROM incidents
+    UNION ALL
+    SELECT * FROM first_expenses
+    UNION ALL
+    SELECT * FROM payments
+),
+
+final AS (
+    SELECT c.surrogated_certificate_id,
+           c.certificate_number, 
+           c.name,
+           i.tipo_de_interaccion,
+           i.fecha_de_interaccion
+    FROM patient_data c
+    INNER JOIN interacciones i
+    ON c.surrogated_certificate_id = i.surrogated_certificate_id
+    ORDER BY c.certificate_number, i.fecha_de_interaccion
+)
+
+SELECT * FROM final
+~~~
+
+con la cual se generó la tabla oro:
+
+![](https://github.com/famenor/insurance_case/blob/main/pictures/customer_interaction_gold.jpg)
+
+Esta tabla está disponible en el enlace https://github.com/famenor/insurance_case/blob/main/datalake/gold/customer_interaction.csv
+
+### Edades al Diagnosticar
+
+Esta tabla se generó mediante la siguiente consulta en DBT:
+
+~~~sql
+WITH diagnoses AS (
+    SELECT dc.surrogated_id AS surrogated_certificate_id, date_01.date AS birth_date,
+           fc.consultation_id, date_02.date AS consultation_date, dd.cie_id, dd.cie_name
+    
+    FROM silver.dim_certificate dc
+
+    INNER JOIN silver.fact_consultation fc
+    ON dc.surrogated_id = fc.surrogated_certificate_id
+
+    INNER JOIN silver.bridge_consultation_diagnosis bcd
+    ON fc.consultation_id = bcd.consultation_id
+
+    INNER JOIN silver.dim_cie dd
+    ON bcd.surrogated_cie_id = dd.surrogated_id
+
+    INNER JOIN silver.dim_birth_date date_01 ON date_01.birth_date_id = dc.birth_date_id
+    INNER JOIN silver.dim_consultation_date date_02 ON date_02.consultation_date_id = fc.consultation_date_id
+),
+
+age_at_diagnosis AS (
+    SELECT surrogated_certificate_id, consultation_id, 
+           cie_id, cie_name, birth_date, consultation_date,
+           DATEDIFF('year', birth_date, consultation_date) AS 'age_at_diagnosis'
+    FROM diagnoses
+)
+
+SELECT * FROM age_at_diagnosis ORDER BY surrogated_certificate_id, age_at_diagnosis
+~~~
+
+que al ejecutarsé generó la tabla oro:
+
+![](https://github.com/famenor/insurance_case/blob/main/pictures/age_at_diagnosis.jpg)
+
+la cual está disponible en el enlace https://github.com/famenor/insurance_case/blob/main/datalake/gold/age_at_diagnosis.csv
+
 
 
 
