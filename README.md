@@ -96,17 +96,19 @@ c) Nivel Oro: Las fuentes han sido utilizadas para generar información de alto 
 
 Se definieron 7 políticas para aplicar, en las cuales se detectarán valores nulos, valores fuera de intervalo, valores con formato incorrecto, valores no únicos, valores fuera de lista (incluye llave foranea) y valores con orden incorrecto:
 
-![](DIM SCREEN)
+![](https://github.com/famenor/insurance_case/blob/main/pictures/dim_screen.jpg)
 
 Cuando se aplique una política y se encuentre un error, este será almacenado en una tabla de hechos especial, con esta información será posible etiquetar a los registros que no cumplieron con la política y en futuras iteraciones robustecer el proceso de auditoría.
 
-![]([FACT ERROR EVENT DETAIL])
+![](https://github.com/famenor/insurance_case/blob/main/pictures/fact_event_error_datail.jpg)
 
 ### Dimensión Fecha
 
 Todos las fechas fueron sustituidas con un identificador que apunta a una vista particular, estas vistas se generaron a partir de una dimensión fecha principal:
 
-### Dimensión Certificado (Cliente)
+![](https://github.com/famenor/insurance_case/blob/main/pictures/dim_date.jpg)
+
+### Dimensión Certificado o Cliente
 
 Se aplicaron las siguientes políticas de validación:
 
@@ -138,35 +140,41 @@ Se aplicaron las siguientes políticas de validación:
 
 y se generó la dimensión bronce:
 
-![](DIM CERTIFICATE BRONZE)
+![](https://github.com/famenor/insurance_case/blob/main/pictures/dim_certificate_bronze.jpg)
 
 Posteriormente, para el nivel plata se enmascararon los datos sensibles, se reemplazaron las llaves naturales por subrogadas (propia y en fecha de nacimiento):
 
-![](DIM CERTIFICATE SILVER)
+![](https://github.com/famenor/insurance_case/blob/main/pictures/dim_certificate_silver.jpg)
+
+### Dimensión Patologías CIE
+
+Se aplicaron las siguientes políticas de validación:
+
+~~~python
+        self.facade_screens.setup(data=self.data, table_name='cie_catalog', identifier='cie_id')
+        
+        #CHECK NULL VALUES
+        columns = ['cie_name']
+        for column in columns:
+            self.facade_screens.apply_screen_is_missing_value(column)
+
+        #CHECK UNIQUE VALUES
+        self.facade_screens.apply_screen_is_not_unique('cie_id')
+~~~
+
+y se generó la dimensión bronce:
+
+![]()
+
+Posteriormente, para el nivel plata, se reemplazaron las llaves naturales por subrogadas (propia):
+
+![]()
 
 
 
-Validaciones de certificados:
- - El número de certificado debe tener una relación uno a uno con la llave natural
- - Edad debe corresponder con la fecha de nacimiento
- - El año de nacimiento debe estar entre 1925 y 2025
- - Numero de certificado debe ser numerico y con 6 o más digitos
- - Géneros con valores M y F
- - Las ciudades deberán estar ligadas a un conjunto de valores válidos
- - Todos los campos son requeridos
 
 
 
-
- Validaciones de terminos:
-  - La fecha de inicio debe ser mayor que 2020 y la fecha de termino debe ser menor que 2050
-  - La fecha de inicio debe ser menor que la fecha de termino
-  - Validar la llave foranea del certificado
-  - Todos los campos son requeridos
-
- Validaciones:
-  - Todos los campos son requeridos
-  - El codigo de la patologia debe tener una relación uno a uno con la llave natural
 
 
 
