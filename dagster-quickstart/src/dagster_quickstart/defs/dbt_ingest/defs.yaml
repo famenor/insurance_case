@@ -2,3 +2,5 @@ type: dagster_dbt.DbtProjectComponent
 
 attributes:
   project: '{{ project_root }}/../insurance_case'
+  translation:
+    group_name: gold

@@ -1,0 +1,9 @@
+[32m2025-10-26 19:22:19 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - e15fdf36-0ae1-4383-b637-5a0f0173884e - 80509 - LOGS_CAPTURED - Started capturing logs in process (pid: 80509).
+[32m2025-10-26 19:22:19 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - e15fdf36-0ae1-4383-b637-5a0f0173884e - 80509 - load_bridge_consultation_diagnosis - STEP_START - Started execution of step "load_bridge_consultation_diagnosis".
+INFO: Context impl SQLiteImpl.
+INFO: Will assume non-transactional DDL.
+[32m2025-10-26 19:22:19 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - e15fdf36-0ae1-4383-b637-5a0f0173884e - 80509 - load_bridge_consultation_diagnosis - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+[32m2025-10-26 19:22:19 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - e15fdf36-0ae1-4383-b637-5a0f0173884e - load_bridge_consultation_diagnosis - Writing file at: /home/armando/git/insurance_case/dagster-quickstart/.tmp_dagster_home_kqk323qz/storage/load_bridge_consultation_diagnosis using PickledObjectFilesystemIOManager...
+[32m2025-10-26 19:22:19 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - e15fdf36-0ae1-4383-b637-5a0f0173884e - 80509 - load_bridge_consultation_diagnosis - ASSET_MATERIALIZATION - Materialized value load_bridge_consultation_diagnosis.
+[32m2025-10-26 19:22:19 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - e15fdf36-0ae1-4383-b637-5a0f0173884e - 80509 - load_bridge_consultation_diagnosis - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+[32m2025-10-26 19:22:19 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - e15fdf36-0ae1-4383-b637-5a0f0173884e - 80509 - load_bridge_consultation_diagnosis - STEP_SUCCESS - Finished execution of step "load_bridge_consultation_diagnosis" in 164ms.

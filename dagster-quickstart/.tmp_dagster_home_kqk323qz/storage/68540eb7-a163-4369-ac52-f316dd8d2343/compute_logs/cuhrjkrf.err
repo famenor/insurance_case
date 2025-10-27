@@ -1,0 +1,9 @@
+[32m2025-10-26 19:19:32 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 68540eb7-a163-4369-ac52-f316dd8d2343 - 75526 - LOGS_CAPTURED - Started capturing logs in process (pid: 75526).
+[32m2025-10-26 19:19:32 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 68540eb7-a163-4369-ac52-f316dd8d2343 - 75526 - extract_cie - STEP_START - Started execution of step "extract_cie".
+INFO: Context impl SQLiteImpl.
+INFO: Will assume non-transactional DDL.
+[32m2025-10-26 19:19:32 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 68540eb7-a163-4369-ac52-f316dd8d2343 - 75526 - extract_cie - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+[32m2025-10-26 19:19:32 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 68540eb7-a163-4369-ac52-f316dd8d2343 - extract_cie - Writing file at: /home/armando/git/insurance_case/dagster-quickstart/.tmp_dagster_home_kqk323qz/storage/extract_cie using PickledObjectFilesystemIOManager...
+[32m2025-10-26 19:19:32 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 68540eb7-a163-4369-ac52-f316dd8d2343 - 75526 - extract_cie - ASSET_MATERIALIZATION - Materialized value extract_cie.
+[32m2025-10-26 19:19:32 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 68540eb7-a163-4369-ac52-f316dd8d2343 - 75526 - extract_cie - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+[32m2025-10-26 19:19:32 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 68540eb7-a163-4369-ac52-f316dd8d2343 - 75526 - extract_cie - STEP_SUCCESS - Finished execution of step "extract_cie" in 178ms.

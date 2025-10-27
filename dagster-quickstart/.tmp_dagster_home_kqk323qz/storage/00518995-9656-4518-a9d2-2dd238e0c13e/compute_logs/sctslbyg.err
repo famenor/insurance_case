@@ -1,0 +1,9 @@
+[32m2025-10-26 19:17:50 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 00518995-9656-4518-a9d2-2dd238e0c13e - 72399 - LOGS_CAPTURED - Started capturing logs in process (pid: 72399).
+[32m2025-10-26 19:17:50 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 00518995-9656-4518-a9d2-2dd238e0c13e - 72399 - parse_consultations_data - STEP_START - Started execution of step "parse_consultations_data".
+[32m2025-10-26 19:17:50 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 00518995-9656-4518-a9d2-2dd238e0c13e - 72399 - parse_consultations_data - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+[32m2025-10-26 19:17:50 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 00518995-9656-4518-a9d2-2dd238e0c13e - parse_consultations_data - Writing file at: /home/armando/git/insurance_case/dagster-quickstart/.tmp_dagster_home_kqk323qz/storage/parse_consultations_data using PickledObjectFilesystemIOManager...
+INFO: Context impl SQLiteImpl.
+INFO: Will assume non-transactional DDL.
+[32m2025-10-26 19:17:50 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 00518995-9656-4518-a9d2-2dd238e0c13e - 72399 - parse_consultations_data - ASSET_MATERIALIZATION - Materialized value parse_consultations_data.
+[32m2025-10-26 19:17:50 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 00518995-9656-4518-a9d2-2dd238e0c13e - 72399 - parse_consultations_data - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+[32m2025-10-26 19:17:50 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 00518995-9656-4518-a9d2-2dd238e0c13e - 72399 - parse_consultations_data - STEP_SUCCESS - Finished execution of step "parse_consultations_data" in 193ms.

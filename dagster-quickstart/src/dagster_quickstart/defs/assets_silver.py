@@ -7,6 +7,8 @@ import datetime
 import duckdb
 from abc import ABC, abstractmethod
 
+from dagster_dbt import DbtProjectComponent, dbt_assets
+
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
 
@@ -1547,7 +1549,7 @@ def load_fact_term():
 
 ## CONSULTATIONS
 @dg.asset(name='extract_consultations', group_name='bronze', 
-          deps=['load_dim_cerfificate', 'generate_dim_date'])
+          deps=['load_dim_cerfificate', 'generate_dim_date', 'parse_consultations_data'])
 def extract_consultations():
 
     path = '../datalake/preprocessed/consultations_dummy.csv'
@@ -1575,7 +1577,7 @@ def load_fact_consultation():
 
 ## CONSULTATION DIAGNOSES
 @dg.asset(name='extract_consultation_diagnoses', group_name='bronze', 
-          deps=['load_fact_consultation', 'load_dim_cie'])
+          deps=['load_fact_consultation', 'load_dim_cie', 'parse_consultations_diagnosis_data'])
 def extract_consultation_diagnoses():
 
     path = '../datalake/preprocessed/consultation_diagnoses_dummy.csv'
