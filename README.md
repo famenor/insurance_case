@@ -69,7 +69,7 @@ Contiene los reclamos hechos por los clientes asegurados para recibir algún pag
 
 ![](https://github.com/famenor/insurance_case/blob/main/pictures/diagrama_er.jpg)
 
-## 2.- Implementación para el Almacén de Datos
+## 2.- Implementación del Almacén de Datos
 
 Con el perfilamiento de la sección anterior ahora se conoce la estructura mediante la cual los datos se relacionan, así como las reglas principales que se deben de cumplir.
 
@@ -164,17 +164,211 @@ Se aplicaron las siguientes políticas de validación:
 
 y se generó la dimensión bronce:
 
-![]()
+![](https://github.com/famenor/insurance_case/blob/main/pictures/dim_cie_bronze.jpg)
 
 Posteriormente, para el nivel plata, se reemplazaron las llaves naturales por subrogadas (propia):
 
-![]()
+![](https://github.com/famenor/insurance_case/blob/main/pictures/dim_cie_silver.jpg)
 
+### Hechos de Términos
 
+Se aplicaron las siguientes políticas de validación, en las tablas de hechos sí se incluye una columna especial para indicar si pasó la auditoria:
 
+~~~python
+        conn = duckdb.connect("insurance_case.db")
+        certificate_ids = conn.sql("SELECT certificate_id FROM silver.dim_certificate").df()
+        conn.close()
 
+        self.facade_screens.setup(data=self.data, table_name='term_dummy', identifier='term_id')
+        
+        #CHECK NULL VALUES
+        columns = ['certificate_id', 'term_begin_date', 'term_end_date']
+        for column in columns:
+            self.facade_screens.apply_screen_is_missing_value(column)
 
+        #CHECK UNIQUE VALUES
+        self.facade_screens.apply_screen_is_not_unique('term_id')
 
+        #CHECK NOT DATE FORMAT VALUES
+        self.facade_screens.apply_screen_is_not_date_format('term_begin_date', '%Y-%m-%d')
+        self.facade_screens.apply_screen_is_not_date_format('term_end_date', '%Y-%m-%d')
+
+        self.data['term_begin_date'] = pd.to_datetime(self.data['term_begin_date'], format='%Y-%m-%d')
+        self.data['term_end_date'] = pd.to_datetime(self.data['term_end_date'], format='%Y-%m-%d')
+
+        #CHECK OUT OF BOUNDS VALUES
+        self.facade_screens.apply_screen_is_out_of_bounds_value('term_begin_date', pd.Timestamp('2020-01-01'), pd.Timestamp('2030-12-31'))
+        self.facade_screens.apply_screen_is_out_of_bounds_value('term_end_date', pd.Timestamp('2020-01-01'), pd.Timestamp('2030-12-31'))
+
+        #CHECK CRONOLOGICAL ORDER
+        self.facade_screens.apply_screen_is_lower_than('term_end_date', 'term_begin_date')
+
+        #CHECK OUT OF LIST VALUES
+        self.facade_screens.apply_screen_is_out_of_list_value('certificate_id', certificate_ids['certificate_id'].tolist())
+~~~
+
+quedando así la tabla de hechos bronce:
+
+![](https://github.com/famenor/insurance_case/blob/main/pictures/fact_term_bronze.jpg)
+
+Posteriormente, para el nivel plata, se sustituyeron llaves naturales foraneas por subrogadas y se filtraron datos que no pasaron la auditoria:
+
+![](https://github.com/famenor/insurance_case/blob/main/pictures/fact_term_silver.jpg)
+
+### Hechos de Consultas
+
+Se aplicaron las siguientes políticas de validación:
+
+~~~python
+        conn = duckdb.connect("insurance_case.db")
+        certificate_ids = conn.sql("SELECT certificate_id FROM silver.dim_certificate").df()
+        conn.close()
+
+        self.facade_screens.setup(data=self.data, table_name='consultations', identifier='consultation_id')
+        
+        #CHECK NULL VALUES
+        columns = ['certificate_id', 'consultation_date', 'specialty', 'placed_by', 'pause_consultations', 'prescription_or_medical_order']
+        for column in columns:
+            self.facade_screens.apply_screen_is_missing_value(column)
+
+        #CHECK UNIQUE VALUES
+        self.facade_screens.apply_screen_is_not_unique('consultation_id')
+
+        #CHECK NOT DATE FORMAT VALUES
+        self.facade_screens.apply_screen_is_not_date_format('consultation_date', '%Y-%m-%d')
+
+        self.data['consultation_date'] = pd.to_datetime(self.data['consultation_date'], format='%Y-%m-%d')
+
+        #CHECK OUT OF BOUNDS VALUES
+        self.facade_screens.apply_screen_is_out_of_bounds_value('consultation_date', pd.Timestamp('2020-01-01'), pd.Timestamp('2030-12-31'))
+
+        #CHECK OUT OF LIST VALUES
+        self.facade_screens.apply_screen_is_out_of_list_value('certificate_id', certificate_ids['certificate_id'].tolist())
+        self.facade_screens.apply_screen_is_out_of_list_value('pause_consultations', ['Sí', 'No', 'Sin especificar'])
+        self.facade_screens.apply_screen_is_out_of_list_value('prescription_or_medical_order', ['Sin Especificar', 'Orden Médica', 'Receta Médica', 'Ambos', 'Ninguno'])
+        self.facade_screens.apply_screen_is_out_of_list_value('specialty', ['Medicina General', 'Geriatría', 'Gerontología', 'Nutrición'])
+~~~
+
+quedando así la tabla de hechos bronce:
+
+![](https://github.com/famenor/insurance_case/blob/main/pictures/fact_consultation_bronze.jpg)
+
+Posteriormente, para el nivel plata, se sustituyeron llaves naturales foraneas por subrogadas y se filtraron datos que no pasaron la auditoria:
+
+![](https://github.com/famenor/insurance_case/blob/main/pictures/fact_consultation_silver.jpg)
+
+### Hechos de Diágnosticos (Puente)
+
+En este caso, se decidió optar por una tabla puente que permita enlazar múltiples valores de la dimensión de patologías con las consultas médicas, se aplicaron las siguientes validaciones:
+
+~~~python
+        conn = duckdb.connect("insurance_case.db")
+        consultation_identifiers = conn.sql("SELECT consultation_id FROM silver.fact_consultation").df()
+        cie_identifiers = conn.sql("SELECT cie_id FROM silver.dim_cie").df()
+        conn.close()
+        
+        self.facade_screens.setup(data=self.data, table_name='consultation_diagnoses', identifier='consultation_diagnosis_id')
+        
+        #CHECK NULL VALUES
+        columns = ['consultation_id', 'cie_id']
+        for column in columns:
+            self.facade_screens.apply_screen_is_missing_value(column)
+
+        #CHECK UNIQUE VALUES
+        self.facade_screens.apply_screen_is_not_unique('consultation_diagnosis_id')
+
+        #CHECK OUT OF LIST VALUES
+        self.facade_screens.apply_screen_is_out_of_list_value('consultation_id', consultation_identifiers['consultation_id'].tolist())
+        self.facade_screens.apply_screen_is_out_of_list_value('cie_id', cie_identifiers['cie_id'].tolist())
+~~~
+
+quedando así la tabla de hechos bronce:
+
+![](https://github.com/famenor/insurance_case/blob/main/pictures/bridge_consultation_diagnosis_bronze.jpg)
+
+Posteriormente, para el nivel plata, se sustituyeron llaves naturales foraneas por subrogadas y se filtraron datos que no pasaron la auditoria:
+
+![](https://github.com/famenor/insurance_case/blob/main/pictures/bridge_consultation_diagnosis_silver.jpg)
+
+### Hechos de Reclamos
+
+Se aplicaron las siguientes políticas de validación:
+
+~~~python
+        conn = duckdb.connect("insurance_case.db")
+        certificate_numbers = conn.sql("SELECT certificate_number FROM silver.dim_certificate").df()
+        cie_identifiers = conn.sql("SELECT cie_id FROM silver.dim_cie").df()
+        conn.close()
+        
+        self.facade_screens.setup(data=self.data, table_name='claims', identifier='claim_id')
+        
+        #CHECK NULL VALUES
+        columns = ['state', 'cie_id', 'diagnosis', 'incident_date', 'payments', 'coinsurance',
+                   'ivarec', 'deductible', 'incident_reason', 'cve_mes', 'month_cont_date', 'payment_type', 'provider', 'certificate_number']
+        for column in columns:
+            self.facade_screens.apply_screen_is_missing_value(column)
+
+        #CHECK UNIQUE VALUES
+        self.facade_screens.apply_screen_is_not_unique('claim_id')
+
+        #CHECK NOT DIGIT STRING VALUES
+        self.facade_screens.apply_screen_is_not_digit_string('certificate_number', 6)
+
+        #CHECK NOT DATE FORMAT VALUES
+        self.facade_screens.apply_screen_is_not_date_format('incident_date', '%d/%m/%Y')
+        self.facade_screens.apply_screen_is_not_date_format('payment_date', '%d/%m/%Y')
+        self.facade_screens.apply_screen_is_not_date_format('first_expense_date', '%d/%m/%Y')
+        self.facade_screens.apply_screen_is_not_date_format('month_cont_date', '%d/%m/%Y')
+
+        self.data['incident_date'] = pd.to_datetime(self.data['incident_date'], format='%d/%m/%Y')
+        self.data['payment_date'] = pd.to_datetime(self.data['payment_date'], format='%d/%m/%Y')
+        self.data['first_expense_date'] = pd.to_datetime(self.data['first_expense_date'], format='%d/%m/%Y')
+        self.data['month_cont_date'] = pd.to_datetime(self.data['month_cont_date'], format='%d/%m/%Y')
+
+        #CHECK OUT OF BOUNDS VALUES
+        self.facade_screens.apply_screen_is_out_of_bounds_value('incident_date', pd.Timestamp('2020-01-01'), pd.Timestamp('2030-12-31'))
+        self.facade_screens.apply_screen_is_out_of_bounds_value('payment_date', pd.Timestamp('2020-01-01'), pd.Timestamp('2030-12-31'))
+        self.facade_screens.apply_screen_is_out_of_bounds_value('first_expense_date', pd.Timestamp('2020-01-01'), pd.Timestamp('2030-12-31'))
+        self.facade_screens.apply_screen_is_out_of_bounds_value('month_cont_date', pd.Timestamp('2020-01-01'), pd.Timestamp('2030-12-31'))
+
+        self.facade_screens.apply_screen_is_out_of_bounds_value('ocurrido', -1000000, 10000000)
+        self.facade_screens.apply_screen_is_out_of_bounds_value('payments', 0, 10000000)
+        self.facade_screens.apply_screen_is_out_of_bounds_value('coinsurance', 0, 1000000)
+        self.facade_screens.apply_screen_is_out_of_bounds_value('ivarec', 0, 1000000)
+        self.facade_screens.apply_screen_is_out_of_bounds_value('deductible', 0, 1000000)
+
+        #CHECK CRONOLOGICAL ORDER
+        self.facade_screens.apply_screen_is_lower_than('month_cont_date', 'payment_date')
+        self.facade_screens.apply_screen_is_lower_than('payment_date', 'first_expense_date')
+        self.facade_screens.apply_screen_is_lower_than('first_expense_date', 'incident_date')
+
+        self.data['incident_date_id'] = self.data['incident_date'].dt.strftime('%Y%m%d')
+        self.data['payment_date_id'] = self.data['payment_date'].dt.strftime('%Y%m%d')
+        self.data['first_expense_date_id'] = self.data['first_expense_date'].dt.strftime('%Y%m%d')
+        self.data['month_cont_date_id'] = self.data['month_cont_date'].dt.strftime('%Y%m%d')
+
+        self.data['incident_date_id'] = self.data['incident_date_id'].fillna('-2').astype(int)
+        self.data['payment_date_id'] = self.data['payment_date_id'].fillna('-2').astype(int)
+        self.data['first_expense_date_id'] = self.data['first_expense_date_id'].fillna('-2').astype(int)
+        self.data['month_cont_date_id'] = self.data['month_cont_date_id'].fillna('-2').astype(int)
+
+        #CHECK OUT OF LIST VALUES
+        self.facade_screens.apply_screen_is_out_of_list_value('certificate_number', certificate_numbers['certificate_number'].tolist())
+        self.facade_screens.apply_screen_is_out_of_list_value('incident_reason', ['Enfermedad', 'Accidente'])
+        self.facade_screens.apply_screen_is_out_of_list_value('payment_type', ['Pago Directo'])
+        self.facade_screens.apply_screen_is_out_of_list_value('cie_id', cie_identifiers['cie_id'].tolist())
+
+        self.errors = self.facade_screens.get_error_events_detail()
+        self.data = self.data.drop(columns=['__screen__'])
+~~~
+
+quedando así la tabla de hechos bronce:
+
+![](https://github.com/famenor/insurance_case/blob/main/pictures/fact_claim_bronze.jpg)
+
+Posteriormente, para el nivel plata, se sustituyeron llaves naturales foraneas por subrogadas y se filtraron datos que no pasaron la auditoria:
+
+![](https://github.com/famenor/insurance_case/blob/main/pictures/fact_claim_silver.jpg)
 
 
 
