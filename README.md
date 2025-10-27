@@ -67,7 +67,21 @@ Contiene los reclamos hechos por los clientes asegurados para recibir algún pag
 - La columna NumCertificado es llave foranea hacia certificados (numero_certificado)
 - En general no habia valores nulos, pero se supondrá más adelante que algunos campos pueden tenerlos.
 
- 
+![](https://github.com/famenor/insurance_case/blob/main/pictures/diagrama_er.jpg)
+
+## 2.- Implementación para el Almacén de Datos
+
+Con el perfilamiento de la sección anterior ahora se conoce la estructura mediante la cual los datos se relacionan, así como las reglas principales que se deben de cumplir.
+
+Se proponen 3 niveles de madurez segun el procesamiento de los datos:
+
+a) Nivel Bronce: La fuente ha pasado por un proceso de extracción en el cual se han formateado los datos y se han aplicado políticas de validación e integridad, ningun dato se descarta pero aquellos registros que no cumplen con las políticas son etiquetados para fines de auditoría.
+b) Nivel Plata: La fuente ha sido filtrada al descartar las filas etiquetadas del nivel anterior, los datos también han sido modelados con estructura de dimensión y hechos.
+c) Nivel Oro: Las fuentes han sido utilizadas para generar información de alto valor.
+
+- Debido a la complejidad que requiere el tratamiento prematuro de los datos, se utilizará Python para procesar los datos hasta que lleguen al nivel plata.
+- Una vez que los datos estén en el nivel plata, se utilizará DBT hasta que lleguen al nivel oro.
+
 
 
 Validaciones de certificados:
@@ -91,6 +105,7 @@ Validaciones de certificados:
  Validaciones:
   - Todos los campos son requeridos
   - El codigo de la patologia debe tener una relación uno a uno con la llave natural
+
 
 
 
