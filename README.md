@@ -76,11 +76,73 @@ Con el perfilamiento de la sección anterior ahora se conoce la estructura media
 Se proponen 3 niveles de madurez segun el procesamiento de los datos:
 
 a) Nivel Bronce: La fuente ha pasado por un proceso de extracción en el cual se han formateado los datos y se han aplicado políticas de validación e integridad, ningun dato se descarta pero aquellos registros que no cumplen con las políticas son etiquetados para fines de auditoría.
+
 b) Nivel Plata: La fuente ha sido filtrada al descartar las filas etiquetadas del nivel anterior, los datos también han sido modelados con estructura de dimensión y hechos.
+
 c) Nivel Oro: Las fuentes han sido utilizadas para generar información de alto valor.
+
+### Herramientas para procesamiento
 
 - Debido a la complejidad que requiere el tratamiento prematuro de los datos, se utilizará Python para procesar los datos hasta que lleguen al nivel plata.
 - Una vez que los datos estén en el nivel plata, se utilizará DBT hasta que lleguen al nivel oro.
+- Los procesos serán ejecutados mediante Dagster.
+
+### Herramientas para almacenamiento
+
+- Los archivos de entrada y salida se ubicarán en este mismo repositorio.
+- Las tablas con nivel bronce, plata y oro se guardarán en Duckdb (emulando a un almacén de datos).
+
+### Politicas de validación e integridad
+
+Se definieron 7 políticas para aplicar, en las cuales se detectarán valores nulos, valores fuera de intervalo, valores con formato incorrecto, valores no únicos, valores fuera de lista (incluye llave foranea) y valores con orden incorrecto:
+
+![](DIM SCREEN)
+
+Cuando se aplique una política y se encuentre un error, este será almacenado en una tabla de hechos especial, con esta información será posible etiquetar a los registros que no cumplieron con la política y en futuras iteraciones robustecer el proceso de auditoría.
+
+![]([FACT ERROR EVENT DETAIL])
+
+### Dimensión Fecha
+
+Todos las fechas fueron sustituidas con un identificador que apunta a una vista particular, estas vistas se generaron a partir de una dimensión fecha principal:
+
+### Dimensión Certificado (Cliente)
+
+Se aplicaron las siguientes políticas de validación:
+
+~~~python
+        #CHECK NULL VALUES
+        columns = ['name', 'email', 'age', 'city', 'birth_date', 'certificate_number', 'gender']
+        for column in columns:
+            self.facade_screens.apply_screen_is_missing_value(column)
+
+        #CHECK UNIQUE VALUES
+        self.facade_screens.apply_screen_is_not_unique('certificate_id')
+        self.facade_screens.apply_screen_is_not_unique('certificate_number')
+
+        #CHECK NOT DIGIT STRING VALUES
+        self.facade_screens.apply_screen_is_not_digit_string('certificate_number', 6)
+
+        #CHECK NOT DATE FORMAT VALUES
+        self.facade_screens.apply_screen_is_not_date_format('birth_date', '%Y-%m-%d')
+
+        self.data['birth_date'] = pd.to_datetime(self.data['birth_date'], format='%Y-%m-%d')
+
+        #CHECK OUT OF BOUNDS VALUES
+        self.facade_screens.apply_screen_is_out_of_bounds_value('age', 0, 100)
+        self.facade_screens.apply_screen_is_out_of_bounds_value('birth_date', pd.Timestamp('1925-01-01'), pd.Timestamp('2024-12-31'))
+
+        #CHECK OUT OF LIST VALUES
+        self.facade_screens.apply_screen_is_out_of_list_value('gender', ['M', 'F'])
+~~~
+
+y se generó la dimensión bronce:
+
+![](DIM CERTIFICATE BRONZE)
+
+Posteriormente, para el nivel plata se enmascararon los datos sensibles, se reemplazaron las llaves naturales por subrogadas (propia y en fecha de nacimiento):
+
+![](DIM CERTIFICATE SILVER)
 
 
 
@@ -105,6 +167,7 @@ Validaciones de certificados:
  Validaciones:
   - Todos los campos son requeridos
   - El codigo de la patologia debe tener una relación uno a uno con la llave natural
+
 
 
 
