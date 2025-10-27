@@ -1,5 +1,18 @@
 # FLUJO DE DATOS PARA ASEGURADORA
 
+## CONTENIDO
+
+  1 - Perfilamiento de Datos
+  
+  2 - Implementación del Almacén de Datos
+  
+  3 - Tablas Oro
+  
+  4 - Estructura del Repositorio
+  
+  5 - Discusión y Mejoras
+  
+ 
 ## 1.- PERFILAMIENTO DE DATOS
 
 Se recibieron 5 archivos con datos de la aseguradora, lo primero que se hizo fue hacer un análisis de perfilamiento, a continuación se presenta un resumen de este análisis (se puede revisar el analisis completo en el cuaderno https://github.com/famenor/insurance_case/blob/main/appendix_a_profiling.ipynb )
@@ -507,6 +520,20 @@ que al ejecutarsé generó la tabla oro:
 
 la cual está disponible en el enlace https://github.com/famenor/insurance_case/blob/main/datalake/gold/age_at_diagnosis.csv
 
+## 4.- Estructura del Repositorio
+
+
+## 5 .- Discusión y Mejoras
+
+Hasta antes de realizar esta prueba, no había utilizado Dagster ni Duckdb; con DBT tenía poca experiencia, además de ello decidí incorporar algunos componentes que antes no había implementado como son el etiquetado de filas erroneas a partir de políticas de validación, manejo de llaves surrogadas y dimensiones especiales para fechas y auditoría. Las mejoras que veo son las siguientes:
+
+- Ahora considero que es factible implementar en DBT la generación de tablas a nivel plata, al principio solo consideraba que sería útil para el nivel oro.
+- Para el preprocesamiento, ensambles de auditoría y otros componentes considero que puede ser mejor usar otras herramientas.
+- Entender mejor los componentes de Dagster y usarlos adecuadamente.
+- Modularizar mejor el proyecto, acomodar las clases implementadas en archivos para cada subsistema.
+- Los campos de texto capturado son muy importantes en el sector médico, sí es importante incorporar módulos para el analisis inteligente de texto y extracción de rasgos.
+- El catálogo del CIE parece tener diferenctes versiones o formatos, algunos de las patologías no pudieron ser asociadas por mínimas discrepancias en los códigos CIE.
+- Incorporar pruebas unitarias y más pruebas de validación de datos, especialmente en DBT.
 
 
 
