@@ -1,9 +1,0 @@
-[32m2025-10-26 19:20:23 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 5ba5d6a1-cbe2-4822-b4f0-f399381840be - 77097 - LOGS_CAPTURED - Started capturing logs in process (pid: 77097).
-[32m2025-10-26 19:20:23 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 5ba5d6a1-cbe2-4822-b4f0-f399381840be - 77097 - extract_consultations - STEP_START - Started execution of step "extract_consultations".
-INFO: Context impl SQLiteImpl.
-INFO: Will assume non-transactional DDL.
-[32m2025-10-26 19:20:23 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 5ba5d6a1-cbe2-4822-b4f0-f399381840be - 77097 - extract_consultations - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
-[32m2025-10-26 19:20:23 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 5ba5d6a1-cbe2-4822-b4f0-f399381840be - extract_consultations - Writing file at: /home/armando/git/insurance_case/dagster-quickstart/.tmp_dagster_home_kqk323qz/storage/extract_consultations using PickledObjectFilesystemIOManager...
-[32m2025-10-26 19:20:23 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 5ba5d6a1-cbe2-4822-b4f0-f399381840be - 77097 - extract_consultations - ASSET_MATERIALIZATION - Materialized value extract_consultations.
-[32m2025-10-26 19:20:23 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 5ba5d6a1-cbe2-4822-b4f0-f399381840be - 77097 - extract_consultations - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
-[32m2025-10-26 19:20:23 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 5ba5d6a1-cbe2-4822-b4f0-f399381840be - 77097 - extract_consultations - STEP_SUCCESS - Finished execution of step "extract_consultations" in 160ms.

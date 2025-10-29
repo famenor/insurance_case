@@ -1,6 +1,0 @@
-Running with dbt=1.10.13
-Encountered an error:
-Runtime Error
-  at path []: Additional properties are not allowed ('schema-prefix' was unexpected)
-
-Error encountered in /home/armando/git/insurance_case/insurance_case/dbt_project.yml

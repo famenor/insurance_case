@@ -1,9 +1,0 @@
-[32m2025-10-26 12:23:16 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 44179a42-4f4b-4246-8131-33df6ad1a073 - 3661355 - LOGS_CAPTURED - Started capturing logs in process (pid: 3661355).
-[32m2025-10-26 12:23:16 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 44179a42-4f4b-4246-8131-33df6ad1a073 - 3661355 - load_dim_cie - STEP_START - Started execution of step "load_dim_cie".
-INFO: Context impl SQLiteImpl.
-INFO: Will assume non-transactional DDL.
-[32m2025-10-26 12:23:16 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 44179a42-4f4b-4246-8131-33df6ad1a073 - 3661355 - load_dim_cie - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
-[32m2025-10-26 12:23:16 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 44179a42-4f4b-4246-8131-33df6ad1a073 - load_dim_cie - Writing file at: /home/armando/git/insurance_case/dagster-quickstart/.tmp_dagster_home_kqk323qz/storage/load_dim_cie using PickledObjectFilesystemIOManager...
-[32m2025-10-26 12:23:16 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 44179a42-4f4b-4246-8131-33df6ad1a073 - 3661355 - load_dim_cie - ASSET_MATERIALIZATION - Materialized value load_dim_cie.
-[32m2025-10-26 12:23:16 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 44179a42-4f4b-4246-8131-33df6ad1a073 - 3661355 - load_dim_cie - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
-[32m2025-10-26 12:23:16 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 44179a42-4f4b-4246-8131-33df6ad1a073 - 3661355 - load_dim_cie - STEP_SUCCESS - Finished execution of step "load_dim_cie" in 158ms.
