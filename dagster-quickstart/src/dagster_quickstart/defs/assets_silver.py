@@ -1424,8 +1424,7 @@ class FactManager(AbstractFactManager):
 
 #############################################################################
 
-
-
+"""
 @dg.asset(name='init_datawarehouse_resourses', group_name='governance')
 def init_datawarehouse_resources():
 
@@ -1630,3 +1629,4 @@ def load_claim_consultation():
     fact_manager.build_fact(claim_fact_builder)
 
     return
+"""
