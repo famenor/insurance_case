@@ -1,0 +1,26 @@
+[32m2025-10-30 23:37:01 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - a6062aff-229b-4245-994e-d4777810fe51 - 1802103 - LOGS_CAPTURED - Started capturing logs in process (pid: 1802103).
+[32m2025-10-30 23:37:01 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - a6062aff-229b-4245-994e-d4777810fe51 - 1802103 - extract_certificates - STEP_START - Started execution of step "extract_certificates".
+INFO: Context impl SQLiteImpl.
+INFO: Will assume non-transactional DDL.
+[32m2025-10-30 23:37:01 -0600[0m - dagster - [34mERROR[0m - [31m__ASSET_JOB - a6062aff-229b-4245-994e-d4777810fe51 - 1802103 - extract_certificates - STEP_FAILURE - Execution of step "extract_certificates" failed.
+
+dagster._core.errors.DagsterExecutionStepExecutionError: Error occurred while executing op "extract_certificates"::
+
+TypeError: AbstractSourceExtractorTemplate.__init__() takes 1 positional argument but 2 were given
+
+Stack Trace:
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/utils.py", line 57, in op_execution_error_boundary
+    yield
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_utils/__init__.py", line 392, in iterate_with_context
+    next_output = next(iterator)
+                  ^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/compute_generator.py", line 137, in _coerce_op_compute_fn_to_iterator
+    result = invoke_compute_fn(
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/compute_generator.py", line 117, in invoke_compute_fn
+    return fn(context, **args_to_pass) if context_arg_provided else fn(**args_to_pass)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/src/dagster_quickstart/defs/assets_silver.py", line 30, in extract_certificates
+    extractor = CertificatesCsvExtractor(path)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[0m

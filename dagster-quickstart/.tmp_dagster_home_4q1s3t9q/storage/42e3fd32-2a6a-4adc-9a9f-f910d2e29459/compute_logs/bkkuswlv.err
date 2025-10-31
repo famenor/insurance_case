@@ -1,0 +1,30 @@
+[32m2025-10-30 23:44:54 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 42e3fd32-2a6a-4adc-9a9f-f910d2e29459 - 1814680 - LOGS_CAPTURED - Started capturing logs in process (pid: 1814680).
+[32m2025-10-30 23:44:54 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 42e3fd32-2a6a-4adc-9a9f-f910d2e29459 - 1814680 - extract_certificates - STEP_START - Started execution of step "extract_certificates".
+INFO: Context impl SQLiteImpl.
+INFO: Will assume non-transactional DDL.
+[32m2025-10-30 23:44:54 -0600[0m - dagster - [34mERROR[0m - [31m__ASSET_JOB - 42e3fd32-2a6a-4adc-9a9f-f910d2e29459 - 1814680 - extract_certificates - STEP_FAILURE - Execution of step "extract_certificates" failed.
+
+dagster._core.errors.DagsterExecutionStepExecutionError: Error occurred while executing op "extract_certificates"::
+
+NameError: name 'extractor' is not defined
+
+Stack Trace:
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/utils.py", line 57, in op_execution_error_boundary
+    yield
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_utils/__init__.py", line 392, in iterate_with_context
+    next_output = next(iterator)
+                  ^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/compute_generator.py", line 137, in _coerce_op_compute_fn_to_iterator
+    result = invoke_compute_fn(
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/compute_generator.py", line 117, in invoke_compute_fn
+    return fn(context, **args_to_pass) if context_arg_provided else fn(**args_to_pass)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/src/dagster_quickstart/defs/assets_silver.py", line 39, in extract_certificates
+    extractor.process()
+  File "/home/armando/git/insurance_case/dagster-quickstart/src/dagster_quickstart/lib/extraction.py", line 79, in process
+    self.generate_error_events()
+  File "/home/armando/git/insurance_case/dagster-quickstart/src/dagster_quickstart/lib/extraction.py", line 64, in generate_error_events
+    error_events_generator = ErrorEventLogsGenerator(error_events_detail=extractor.errors)
+                                                                         ^^^^^^^^^
+[0m

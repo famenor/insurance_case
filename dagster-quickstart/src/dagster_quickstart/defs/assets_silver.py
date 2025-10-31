@@ -7,32 +7,50 @@ import datetime
 import duckdb
 from abc import ABC, abstractmethod
 
+from dagster_quickstart.lib.extraction import *
 from dagster_dbt import DbtProjectComponent, dbt_assets
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
 
 
-
-"""
-
-
-## CERTIFICATES
+## BRONZE - CERTIFICATES
 @dg.asset(name='extract_certificates', group_name='bronze', 
-          deps=['generate_dim_date', 'generate_dim_screen'])
-def extract_certificates():
+          deps=['raw_certificates_data'],
+          required_resource_keys={"insurance_db"},
+          owners=['armando.n90@gmail.com', 'team:data'],
+          metadata={
+                'link_to_docs': dg.MetadataValue.url("www.google.com"),
+                'snippet': dg.MetadataValue.md("Certificados a nivel bronce"),
+                'filepath': dg.MetadataValue.path("duckdb.bronze")},
+          tags={'domain': 'medical', 'sensitive': 'yes', 'quality': 'bronze'})
+def extract_certificates(context):
 
     path = '../datalake/raw/certificate_dummy.csv'
     extractor = CertificatesCsvExtractor()
-    extractor.extract_data(path)
-    extractor.screen_data()
+    extractor.set_path(path)
+    extractor.process()
 
-    error_events_generator = ErrorEventLogsGenerator(error_events_detail=extractor.errors)
-    error_events_generator.export_error_events()
+    data = extractor.data
+    error_events = extractor.error_events
+    error_events_detail = extractor.error_events_detail
 
-    extractor.export_data()
+    insurance_db = context.resources.insurance_db
+    with insurance_db.get_connection() as conn:
+
+        if error_events is not None and error_events.shape[0] > 0:
+            conn.sql("INSERT INTO governance.fact_error_event SELECT * FROM error_events")
+
+        if error_events_detail is not None and error_events_detail.shape[0] > 0:
+            conn.sql("INSERT INTO governance.fact_error_event_detail SELECT * FROM error_events_detail")
+            raise Exception('Dimension data contains errors. Cannot export data to datawarehouse.')
+
+        if data is not None and data.shape[0] > 0:
+            conn.sql("CREATE OR REPLACE TABLE bronze.dim_certificate AS SELECT * FROM data")
 
     return
+
+"""
 
 @dg.asset(name='load_dim_certificate', group_name='silver', 
           deps=['extract_certificates'])
