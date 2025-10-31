@@ -1,0 +1,10 @@
+[32m2025-10-31 12:44:54 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 7cebc0e7-119d-43db-934e-ec0f92c552d1 - 2301894 - LOGS_CAPTURED - Started capturing logs in process (pid: 2301894).
+[32m2025-10-31 12:44:54 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 7cebc0e7-119d-43db-934e-ec0f92c552d1 - 2301894 - silver_dim_first_expense_date - STEP_START - Started execution of step "silver_dim_first_expense_date".
+INFO: Context impl SQLiteImpl.
+INFO: Will assume non-transactional DDL.
+INFO: Successful execution
+[32m2025-10-31 12:44:54 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 7cebc0e7-119d-43db-934e-ec0f92c552d1 - 2301894 - silver_dim_first_expense_date - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+[32m2025-10-31 12:44:54 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 7cebc0e7-119d-43db-934e-ec0f92c552d1 - silver_dim_first_expense_date - Writing file at: /home/armando/git/insurance_case/dagster-quickstart/.tmp_dagster_home_4q1s3t9q/storage/silver_dim_first_expense_date using PickledObjectFilesystemIOManager...
+[32m2025-10-31 12:44:54 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 7cebc0e7-119d-43db-934e-ec0f92c552d1 - 2301894 - silver_dim_first_expense_date - ASSET_MATERIALIZATION - Materialized value silver_dim_first_expense_date.
+[32m2025-10-31 12:44:54 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 7cebc0e7-119d-43db-934e-ec0f92c552d1 - 2301894 - silver_dim_first_expense_date - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+[32m2025-10-31 12:44:54 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 7cebc0e7-119d-43db-934e-ec0f92c552d1 - 2301894 - silver_dim_first_expense_date - STEP_SUCCESS - Finished execution of step "silver_dim_first_expense_date" in 147ms.

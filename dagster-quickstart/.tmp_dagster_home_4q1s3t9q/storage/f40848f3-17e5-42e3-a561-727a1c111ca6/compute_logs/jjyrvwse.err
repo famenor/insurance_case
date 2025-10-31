@@ -1,0 +1,9 @@
+[32m2025-10-31 10:01:16 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f40848f3-17e5-42e3-a561-727a1c111ca6 - 2038361 - LOGS_CAPTURED - Started capturing logs in process (pid: 2038361).
+[32m2025-10-31 10:01:16 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f40848f3-17e5-42e3-a561-727a1c111ca6 - 2038361 - load_dim_certificate - STEP_START - Started execution of step "load_dim_certificate".
+INFO: Context impl SQLiteImpl.
+INFO: Will assume non-transactional DDL.
+[32m2025-10-31 10:01:16 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f40848f3-17e5-42e3-a561-727a1c111ca6 - 2038361 - load_dim_certificate - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+[32m2025-10-31 10:01:16 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f40848f3-17e5-42e3-a561-727a1c111ca6 - load_dim_certificate - Writing file at: /home/armando/git/insurance_case/dagster-quickstart/.tmp_dagster_home_4q1s3t9q/storage/load_dim_certificate using PickledObjectFilesystemIOManager...
+[32m2025-10-31 10:01:16 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f40848f3-17e5-42e3-a561-727a1c111ca6 - 2038361 - load_dim_certificate - ASSET_MATERIALIZATION - Materialized value load_dim_certificate.
+[32m2025-10-31 10:01:16 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f40848f3-17e5-42e3-a561-727a1c111ca6 - 2038361 - load_dim_certificate - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+[32m2025-10-31 10:01:16 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - f40848f3-17e5-42e3-a561-727a1c111ca6 - 2038361 - load_dim_certificate - STEP_SUCCESS - Finished execution of step "load_dim_certificate" in 102ms.

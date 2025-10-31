@@ -1,0 +1,9 @@
+[32m2025-10-31 12:44:28 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - e4fbadb8-83eb-44b7-9bcd-a98092c2aece - 2301145 - LOGS_CAPTURED - Started capturing logs in process (pid: 2301145).
+[32m2025-10-31 12:44:28 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - e4fbadb8-83eb-44b7-9bcd-a98092c2aece - 2301145 - raw_claims_data - STEP_START - Started execution of step "raw_claims_data".
+[32m2025-10-31 12:44:28 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - e4fbadb8-83eb-44b7-9bcd-a98092c2aece - 2301145 - raw_claims_data - STEP_OUTPUT - Yielded output "result" of type "DataFrame". (Type check passed).
+[32m2025-10-31 12:44:28 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - e4fbadb8-83eb-44b7-9bcd-a98092c2aece - raw_claims_data - Writing file at: /home/armando/git/insurance_case/dagster-quickstart/.tmp_dagster_home_4q1s3t9q/storage/raw_claims_data using PickledObjectFilesystemIOManager...
+INFO: Context impl SQLiteImpl.
+INFO: Will assume non-transactional DDL.
+[32m2025-10-31 12:44:28 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - e4fbadb8-83eb-44b7-9bcd-a98092c2aece - 2301145 - raw_claims_data - ASSET_MATERIALIZATION - Materialized value raw_claims_data.
+[32m2025-10-31 12:44:28 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - e4fbadb8-83eb-44b7-9bcd-a98092c2aece - 2301145 - raw_claims_data - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+[32m2025-10-31 12:44:28 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - e4fbadb8-83eb-44b7-9bcd-a98092c2aece - 2301145 - raw_claims_data - STEP_SUCCESS - Finished execution of step "raw_claims_data" in 51ms.
