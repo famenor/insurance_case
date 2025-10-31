@@ -158,6 +158,7 @@ def parse_consultations_diagnosis_data(raw_consultations_data: pd.DataFrame) -> 
     return diagnoses_df
 
 
+# JOB FOR RAW EXTRACTION
 
 @dg.job
 def extract_raw_data():
@@ -172,6 +173,7 @@ def extract_raw_data():
 @dg.schedule(cron_schedule="30 00 * * *", job=extract_raw_data, name="extract_raw_data_schedule")
 def extract_raw_data_schedule():
     return {}
+
 #    return {
 #        "ops": {
 #            "raw_consultations_data": {

@@ -1,0 +1,27 @@
+[32m2025-10-30 20:28:23 -0600[0m - dagster - [34mDEBUG[0m - init_resources - b5335621-ca02-4f05-89e5-59b8ad07cef4 - 1503029 - LOGS_CAPTURED - Started capturing logs in process (pid: 1503029).
+[32m2025-10-30 20:28:23 -0600[0m - dagster - [34mDEBUG[0m - init_resources - b5335621-ca02-4f05-89e5-59b8ad07cef4 - 1503029 - silver_dim_month_cont_date - STEP_START - Started execution of step "silver_dim_month_cont_date".
+[32m2025-10-30 20:28:25 -0600[0m - dagster - [34mERROR[0m - [31minit_resources - b5335621-ca02-4f05-89e5-59b8ad07cef4 - 1503029 - silver_dim_month_cont_date - STEP_FAILURE - Execution of step "silver_dim_month_cont_date" failed.
+
+dagster._core.errors.DagsterExecutionStepExecutionError: Error occurred while executing op "silver_dim_month_cont_date"::
+
+_duckdb.BinderException: Binder Error: Referenced column "date_name" not found in FROM clause!
+Candidate bindings: "day_name", "date", "date_type", "date_id", "quarter_name"
+
+LINE 5:                 date, date_name,
+                              ^
+
+Stack Trace:
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/utils.py", line 57, in op_execution_error_boundary
+    yield
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_utils/__init__.py", line 392, in iterate_with_context
+    next_output = next(iterator)
+                  ^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/compute_generator.py", line 137, in _coerce_op_compute_fn_to_iterator
+    result = invoke_compute_fn(
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/compute_generator.py", line 117, in invoke_compute_fn
+    return fn(context, **args_to_pass) if context_arg_provided else fn(**args_to_pass)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/src/dagster_quickstart/defs/assets_init_db.py", line 254, in silver_dim_month_cont_date
+    conn.execute(result)
+[0m

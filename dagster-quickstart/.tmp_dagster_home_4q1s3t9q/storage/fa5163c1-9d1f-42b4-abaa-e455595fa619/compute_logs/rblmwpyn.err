@@ -1,0 +1,11 @@
+[32m2025-10-30 21:02:19 -0600[0m - dagster - [34mDEBUG[0m - init_resources - fa5163c1-9d1f-42b4-abaa-e455595fa619 - 1556866 - LOGS_CAPTURED - Started capturing logs in process (pid: 1556866).
+[32m2025-10-30 21:02:19 -0600[0m - dagster - [34mDEBUG[0m - init_resources - fa5163c1-9d1f-42b4-abaa-e455595fa619 - 1556866 - silver_dim_date - STEP_START - Started execution of step "silver_dim_date".
+/home/armando/git/insurance_case/dagster-quickstart/src/dagster_quickstart/lib/special_dimensions.py:72: FutureWarning: The behavior of 'isin' with dtype=datetime64[ns] and castable values (e.g. strings) is deprecated. In a future version, these will not be considered matching by isin. Explicitly cast to the appropriate dtype before calling isin instead.
+  dim_date.loc[dim_date['date'].isin(['2025-01-01', '2025-02-05', '2025-03-21', '2025-05-01',
+/home/armando/git/insurance_case/dagster-quickstart/src/dagster_quickstart/lib/special_dimensions.py:95: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  self.dim_date = pd.concat([dim_date, special_dates], ignore_index=True)
+INFO: Successful execution
+[32m2025-10-30 21:02:20 -0600[0m - dagster - [34mDEBUG[0m - init_resources - fa5163c1-9d1f-42b4-abaa-e455595fa619 - 1556866 - silver_dim_date - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+[32m2025-10-30 21:02:20 -0600[0m - dagster - [34mDEBUG[0m - init_resources - fa5163c1-9d1f-42b4-abaa-e455595fa619 - silver_dim_date - Writing file at: /home/armando/git/insurance_case/dagster-quickstart/.tmp_dagster_home_4q1s3t9q/storage/fa5163c1-9d1f-42b4-abaa-e455595fa619/silver_dim_date/result using PickledObjectFilesystemIOManager...
+[32m2025-10-30 21:02:21 -0600[0m - dagster - [34mDEBUG[0m - init_resources - fa5163c1-9d1f-42b4-abaa-e455595fa619 - 1556866 - silver_dim_date - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+[32m2025-10-30 21:02:21 -0600[0m - dagster - [34mDEBUG[0m - init_resources - fa5163c1-9d1f-42b4-abaa-e455595fa619 - 1556866 - silver_dim_date - STEP_SUCCESS - Finished execution of step "silver_dim_date" in 1.1s.

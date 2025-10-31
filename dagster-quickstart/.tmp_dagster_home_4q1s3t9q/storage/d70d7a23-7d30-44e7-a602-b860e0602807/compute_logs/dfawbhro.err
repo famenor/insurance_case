@@ -1,0 +1,24 @@
+[32m2025-10-30 17:30:19 -0600[0m - dagster - [34mDEBUG[0m - init_resources - d70d7a23-7d30-44e7-a602-b860e0602807 - 1220734 - LOGS_CAPTURED - Started capturing logs in process (pid: 1220734).
+[32m2025-10-30 17:30:19 -0600[0m - dagster - [34mDEBUG[0m - init_resources - d70d7a23-7d30-44e7-a602-b860e0602807 - 1220734 - init_datawarehouse_resourses - STEP_START - Started execution of step "init_datawarehouse_resourses".
+[32m2025-10-30 17:30:19 -0600[0m - dagster - [34mERROR[0m - [31minit_resources - d70d7a23-7d30-44e7-a602-b860e0602807 - 1220734 - init_datawarehouse_resourses - STEP_FAILURE - Execution of step "init_datawarehouse_resourses" failed.
+
+dagster._core.errors.DagsterExecutionStepExecutionError: Error occurred while executing op "init_datawarehouse_resourses"::
+
+AttributeError: 'DatawarehouseResourcesCreator' object has no attribute 'table_fact_error_definition'. Did you mean: 'table_fact_error_event_definition'?
+
+Stack Trace:
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/utils.py", line 57, in op_execution_error_boundary
+    yield
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_utils/__init__.py", line 392, in iterate_with_context
+    next_output = next(iterator)
+                  ^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/compute_generator.py", line 137, in _coerce_op_compute_fn_to_iterator
+    result = invoke_compute_fn(
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/compute_generator.py", line 117, in invoke_compute_fn
+    return fn(context, **args_to_pass) if context_arg_provided else fn(**args_to_pass)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/src/dagster_quickstart/defs/assets_init_db.py", line 25, in init_datawarehouse_resources
+    conn.execute(datawarehouse_resources_creator.table_fact_error_definition)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[0m

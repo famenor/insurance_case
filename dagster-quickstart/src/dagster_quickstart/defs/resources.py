@@ -6,15 +6,8 @@ class BaseConfig(dg.Config):
 
 @dg.definitions
 def resources() -> dg.Definitions:
-    return dg.Definitions(resources={"base_config": BaseConfig(date="20251029")})
-
-
-#database_resource = DuckDBResource(database="/tmp/jaffle_platform.duckdb")
-
-#@dg.definitions
-#def resources():
-#    return dg.Definitions(
-#        resources={
-#            "duckdb": database_resource,
-#        }
-#    )
+    resources = {
+        "base_config": BaseConfig(date="20251029"),
+        "insurance_db": DuckDBResource(database="insurance_case.db"),
+    }
+    return dg.Definitions(resources=resources)

@@ -1,0 +1,24 @@
+[32m2025-10-30 21:02:18 -0600[0m - dagster - [34mDEBUG[0m - init_resources - fa5163c1-9d1f-42b4-abaa-e455595fa619 - 1556862 - LOGS_CAPTURED - Started capturing logs in process (pid: 1556862).
+[32m2025-10-30 21:02:18 -0600[0m - dagster - [34mDEBUG[0m - init_resources - fa5163c1-9d1f-42b4-abaa-e455595fa619 - 1556862 - generate_dim_screen - STEP_START - Started execution of step "generate_dim_screen".
+[32m2025-10-30 21:02:18 -0600[0m - dagster - [34mERROR[0m - [31minit_resources - fa5163c1-9d1f-42b4-abaa-e455595fa619 - 1556862 - generate_dim_screen - STEP_FAILURE - Execution of step "generate_dim_screen" failed.
+
+dagster._core.errors.DagsterExecutionStepExecutionError: Error occurred while executing op "generate_dim_screen"::
+
+_duckdb.InvalidInputException: Invalid Input Error: Python Object "result" of type "NoneType" found on line "/home/armando/git/insurance_case/dagster-quickstart/src/dagster_quickstart/defs/assets_init_db.py:285" not suitable for replacement scans.
+Make sure that "result" is either a pandas.DataFrame, duckdb.DuckDBPyRelation, pyarrow Table, Dataset, RecordBatchReader, Scanner, or NumPy ndarrays with supported format
+
+Stack Trace:
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/utils.py", line 57, in op_execution_error_boundary
+    yield
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_utils/__init__.py", line 392, in iterate_with_context
+    next_output = next(iterator)
+                  ^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/compute_generator.py", line 137, in _coerce_op_compute_fn_to_iterator
+    result = invoke_compute_fn(
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/compute_generator.py", line 117, in invoke_compute_fn
+    return fn(context, **args_to_pass) if context_arg_provided else fn(**args_to_pass)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/src/dagster_quickstart/defs/assets_init_db.py", line 285, in generate_dim_screen
+    conn.execute("CREATE OR REPLACE TABLE governance.dim_screen AS SELECT * FROM result")
+[0m

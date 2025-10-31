@@ -1,0 +1,26 @@
+[32m2025-10-30 17:17:27 -0600[0m - dagster - [34mDEBUG[0m - init_resources - 9dd7c4df-f1c5-4d99-b7da-569c3c894119 - 1200359 - LOGS_CAPTURED - Started capturing logs in process (pid: 1200359).
+[32m2025-10-30 17:17:27 -0600[0m - dagster - [34mDEBUG[0m - init_resources - 9dd7c4df-f1c5-4d99-b7da-569c3c894119 - 1200359 - init_datawarehouse_resourses - STEP_START - Started execution of step "init_datawarehouse_resourses".
+[32m2025-10-30 17:17:27 -0600[0m - dagster - [34mERROR[0m - [31minit_resources - 9dd7c4df-f1c5-4d99-b7da-569c3c894119 - 1200359 - init_datawarehouse_resourses - STEP_FAILURE - Execution of step "init_datawarehouse_resourses" failed.
+
+dagster._core.errors.DagsterExecutionStepExecutionError: Error occurred while executing op "init_datawarehouse_resourses"::
+
+AttributeError: module 'dagster' has no attribute 'get_dagster_resource_context'
+
+Stack Trace:
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/utils.py", line 57, in op_execution_error_boundary
+    yield
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_utils/__init__.py", line 392, in iterate_with_context
+    next_output = next(iterator)
+                  ^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/compute_generator.py", line 137, in _coerce_op_compute_fn_to_iterator
+    result = invoke_compute_fn(
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/_core/execution/plan/compute_generator.py", line 117, in invoke_compute_fn
+    return fn(context, **args_to_pass) if context_arg_provided else fn(**args_to_pass)
+                                                                    ^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/src/dagster_quickstart/defs/assets_init_db.py", line 16, in init_datawarehouse_resources
+    duckdb = dg.get_dagster_resource_context().resources.insurance_db
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster/__init__.py", line 777, in __getattr__
+    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
+[0m

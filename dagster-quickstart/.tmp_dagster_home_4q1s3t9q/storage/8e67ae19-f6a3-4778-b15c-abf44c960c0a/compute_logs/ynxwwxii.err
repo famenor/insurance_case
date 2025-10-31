@@ -1,0 +1,7 @@
+[32m2025-10-30 20:31:15 -0600[0m - dagster - [34mDEBUG[0m - init_resources - 8e67ae19-f6a3-4778-b15c-abf44c960c0a - 1507828 - LOGS_CAPTURED - Started capturing logs in process (pid: 1507828).
+[32m2025-10-30 20:31:15 -0600[0m - dagster - [34mDEBUG[0m - init_resources - 8e67ae19-f6a3-4778-b15c-abf44c960c0a - 1507828 - init_datawarehouse_resourses - STEP_START - Started execution of step "init_datawarehouse_resourses".
+INFO: Datawarehouse resources initialized
+[32m2025-10-30 20:31:15 -0600[0m - dagster - [34mDEBUG[0m - init_resources - 8e67ae19-f6a3-4778-b15c-abf44c960c0a - 1507828 - init_datawarehouse_resourses - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+[32m2025-10-30 20:31:15 -0600[0m - dagster - [34mDEBUG[0m - init_resources - 8e67ae19-f6a3-4778-b15c-abf44c960c0a - init_datawarehouse_resourses - Writing file at: /home/armando/git/insurance_case/dagster-quickstart/.tmp_dagster_home_4q1s3t9q/storage/8e67ae19-f6a3-4778-b15c-abf44c960c0a/init_datawarehouse_resourses/result using PickledObjectFilesystemIOManager...
+[32m2025-10-30 20:31:15 -0600[0m - dagster - [34mDEBUG[0m - init_resources - 8e67ae19-f6a3-4778-b15c-abf44c960c0a - 1507828 - init_datawarehouse_resourses - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+[32m2025-10-30 20:31:15 -0600[0m - dagster - [34mDEBUG[0m - init_resources - 8e67ae19-f6a3-4778-b15c-abf44c960c0a - 1507828 - init_datawarehouse_resourses - STEP_SUCCESS - Finished execution of step "init_datawarehouse_resourses" in 195ms.

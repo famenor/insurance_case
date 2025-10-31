@@ -1,0 +1,7 @@
+[32m2025-10-30 21:05:05 -0600[0m - dagster - [34mDEBUG[0m - init_resources - ba30cb84-4aa2-471d-8869-238a47965344 - 1561660 - LOGS_CAPTURED - Started capturing logs in process (pid: 1561660).
+[32m2025-10-30 21:05:05 -0600[0m - dagster - [34mDEBUG[0m - init_resources - ba30cb84-4aa2-471d-8869-238a47965344 - 1561660 - generate_dim_screen - STEP_START - Started execution of step "generate_dim_screen".
+INFO: Successful execution
+[32m2025-10-30 21:05:05 -0600[0m - dagster - [34mDEBUG[0m - init_resources - ba30cb84-4aa2-471d-8869-238a47965344 - 1561660 - generate_dim_screen - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+[32m2025-10-30 21:05:05 -0600[0m - dagster - [34mDEBUG[0m - init_resources - ba30cb84-4aa2-471d-8869-238a47965344 - generate_dim_screen - Writing file at: /home/armando/git/insurance_case/dagster-quickstart/.tmp_dagster_home_4q1s3t9q/storage/ba30cb84-4aa2-471d-8869-238a47965344/generate_dim_screen/result using PickledObjectFilesystemIOManager...
+[32m2025-10-30 21:05:05 -0600[0m - dagster - [34mDEBUG[0m - init_resources - ba30cb84-4aa2-471d-8869-238a47965344 - 1561660 - generate_dim_screen - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+[32m2025-10-30 21:05:05 -0600[0m - dagster - [34mDEBUG[0m - init_resources - ba30cb84-4aa2-471d-8869-238a47965344 - 1561660 - generate_dim_screen - STEP_SUCCESS - Finished execution of step "generate_dim_screen" in 61ms.
