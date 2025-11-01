@@ -1,0 +1,9 @@
+models:
+  - name: age_at_diagnosis
+    meta:
+      dagster:
+        asset_key: "report_age_at_diagnosis"
+  - name: customer_interaction
+    meta:
+      dagster:
+        asset_key: "report_customer_interaction"

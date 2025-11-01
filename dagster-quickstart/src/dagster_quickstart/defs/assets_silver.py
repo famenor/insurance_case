@@ -452,7 +452,6 @@ def load_claim_consultation(context, extract_claims):
 
     return
 
-
 ## JOB FOR BRONZE AND SILVER TABLES
 @dg.job
 def generate_insurance_tables():
@@ -474,3 +473,15 @@ def generate_insurance_tables():
 
     br_claim = extract_claims(sl_cert, sl_cie)
     load_claim_consultation(br_claim)
+
+from dagster import AssetSelection, define_asset_job
+
+## JOB FOR GOLD TABLES
+generate_gold_tables = define_asset_job(
+    name="generate_gold_tables",
+    selection=AssetSelection.assets("report_customer_interaction", "report_age_at_diagnosis")
+)
+
+
+
+

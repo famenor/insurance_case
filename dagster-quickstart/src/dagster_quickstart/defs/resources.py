@@ -11,3 +11,5 @@ def resources() -> dg.Definitions:
         "insurance_db": DuckDBResource(database="insurance_case.db"),
     }
     return dg.Definitions(resources=resources)
+
+

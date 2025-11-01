@@ -1,7 +1,12 @@
-version: 2
-
 sources:
-  - name: silver_data
+  - name: silver_schema
     schema: 'silver'
     tables:
-      - name: dim_birth_date
+      - name: fact_claim
+        columns:
+          - name: claim_id
+            tests:
+              - unique
+              - not_null
+              - not_audit_passed
+      - name: fact_term
