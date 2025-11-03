@@ -525,8 +525,77 @@ la cual está disponible en el enlace https://github.com/famenor/insurance_case/
 
 En la carpeta dagster-quickstart se encuentran los archivos generados por Dagster, entre los archivos a destacar estan:
 
-- assets_raw_preprocessing.py contiene los dos preprocesamiendos para generar los archivos de consultas y diagnóstivos.
-- assets_silver.py contiene los procesos para generar las tablas de nivel bronce y plata, así como las clases con la lógica requerida (ver sección de mejoras).
+- assets_init_db.py contiene los pasos necesarios para inicializar los esquemas de la base de datos, así como las tablas especiales de gobernanza y dimensiones de fechas. Todos estos pasos se ejecutarán mediante un solo job:
+
+~~~python
+# JOB FOR INIT DB
+@dg.job
+def init_resources():
+    init_datawarehouse_resources()
+    silver_dim_date()
+    silver_dim_birth_date()
+    silver_dim_term_begin_date()
+    silver_dim_term_end_date()
+    silver_dim_consultation_date()
+    silver_dim_incident_date()
+    silver_dim_payment_date()
+    silver_dim_first_expense_date()
+    silver_dim_month_cont_date()
+    generate_dim_screen()
+    generate_fact_error_event()
+    generate_fact_error_event_detail()
+~~~
+
+- assets_raw_preprocessing.py contiene las lecturas de las cinco tablas originales, así como los dos preprocesamientos para generar los archivos de consultas y diagnóstivos. Todos estos pasos se ejecutarán mediante un solo job:
+
+~~~python
+@dg.job
+def extract_raw_data():
+    raw_consultations = raw_consultations_data()
+    raw_certificates = raw_certificates_data()
+    raw_terms = raw_terms_data()
+    raw_claims = raw_claims_data()
+    raw_cie = raw_cie_data()
+    parsed_consultations = parse_consultations_data(raw_consultations)
+    parsed_diagnoses = parse_consultations_diagnosis_data(raw_consultations)
+~~~
+
+- assets_silver.py contiene los procesos para generar las tablas de nivel bronce, plata y oro. En el caso de las tablas de bronce y plata (generadas mediante procesos en Python), se generan ordenadamente mediante el siguiente job:
+
+~~~python
+## JOB FOR BRONZE AND SILVER TABLES
+@dg.job
+def generate_insurance_tables():
+
+    br_cert = extract_certificates()
+    sl_cert = load_dim_certificate(br_cert)
+
+    br_cie = extract_cie()
+    sl_cie = load_dim_cie(br_cie)
+
+    br_term = extract_terms(sl_cert)
+    sl_term = load_fact_term(br_term)
+
+    br_cons = extract_consultations(sl_cert)
+    sl_cons = load_fact_consultation(br_cons)
+
+    br_diag = extract_consultation_diagnoses(sl_cons, sl_cie)
+    sl_diag = load_bridge_consultation_diagnosis(br_diag)
+
+    br_claim = extract_claims(sl_cert, sl_cie)
+    load_claim_consultation(br_claim)
+~~~
+
+para las tablas oro (generadas mediante procesos en DBT) se utiliza otro job:
+
+~~~python
+## JOB FOR GOLD TABLES
+generate_gold_tables = define_asset_job(
+    name="generate_gold_tables",
+    selection=AssetSelection.assets("report_customer_interaction", "report_age_at_diagnosis")
+)
+~~~
+  
 - insurance_case.db archivo de Duckdb con las tablas generadas.
 
 ![](https://github.com/famenor/insurance_case/blob/main/pictures/repositorio_01.jpg)
@@ -534,6 +603,10 @@ En la carpeta dagster-quickstart se encuentran los archivos generados por Dagste
 El linaje de los procesos es el siguiente:
 
 ![](https://github.com/famenor/insurance_case/blob/main/pictures/dagster.jpg)
+
+Mientras que la lista de jobs en Dagster es la siguiente:
+
+![](https://github.com/famenor/insurance_case/blob/v0.0.2/pictures/jobs_01.jpg)
 
 ### Datalake
 
@@ -547,6 +620,14 @@ Contiene los archivos generados por DBT y los modelos para generar las tablas or
 
 ![](https://github.com/famenor/insurance_case/blob/main/pictures/repositorio_03.jpg)
 
+Se incluyen pruebas de datos para validar que los insumos se hayan generado correctamente, por ejemplo, a continuación se muestra una prueba para validar que todos los registros de las tablas de hechos a nivel plata hayan cumplido con la auditoria:
+
+![](https://github.com/famenor/insurance_case/blob/v0.0.2/pictures/dbt_tests_01.jpg)
+
+Un ejemplo de como se ejecutan todas las pruebas de DBT:
+
+![](https://github.com/famenor/insurance_case/blob/v0.0.2/pictures/dbt_tests_02.jpg)
+
 ## Otros archivos
 
 - La carpeta pictures contiene las imagenes de apoyo para este documento.
@@ -559,14 +640,11 @@ Contiene los archivos generados por DBT y los modelos para generar las tablas or
 Hasta antes de realizar esta prueba, no había utilizado Dagster ni Duckdb; con DBT tenía poca experiencia, además de ello decidí incorporar algunos componentes que antes no había implementado como son el etiquetado de filas erroneas a partir de políticas de validación, manejo de llaves surrogadas y dimensiones especiales para fechas y auditoría. Las mejoras que veo son las siguientes:
 
 - Si los requerimientos a futuro no son demasiado complejos, se podría implementar en DBT la generación de tablas a nivel plata.
-- Para el preprocesamiento, ensambles de auditoría y otros componentes como la gestión de llaves subrrogadas o control de cambios considero que puede ser mejor usar otras herramientas.
-- Entender mejor los componentes de Dagster y usarlos adecuadamente.
-- Modularizar mejor el proyecto, acomodar las clases implementadas en archivos para cada subsistema.
+- Para el preprocesamiento, ensambles de auditoría y otros componentes como la gestión de llaves subrrogadas o control de cambios es posible que sea más sencillo usar otras herramientas.
+- Mejorar la orquestación en Dagster (ligar los diferentes trabajos, introducir versionamiento de carpetas, etc.).
 - Los campos de texto capturado son muy importantes en el sector médico, sí es importante incorporar módulos para el analisis inteligente de texto y extracción de rasgos.
 - El catálogo del CIE parece tener diferenctes versiones o formatos, algunas de las patologías no pudieron ser asociadas por mínimas discrepancias en los códigos CIE.
-- Incorporar pruebas unitarias y más pruebas de validación de datos, especialmente en DBT.
-
-
+- Incorporar pruebas unitarias y pruebas de validación de datos para las tablas oro.
 
 
 
