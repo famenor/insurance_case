@@ -2,6 +2,125 @@ sources:
   - name: silver_schema
     schema: 'silver'
     tables:
+
+      # DIM CERTIFICATE
+      - name: dim_certificate
+        columns:
+          - name: certificate_id
+            tests:
+              - unique
+              - not_null
+          - name: gender
+            tests:
+              - not_null
+              - accepted_values:
+                  arguments:
+                    values: ['M', 'F']
+          - name: birth_date_id
+            tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: silver.dim_birth_date
+                    field: birth_date_id
+
+      # DIM CIE
+      - name: dim_cie
+        columns:
+          - name: surrogated_id
+            tests:
+              - unique
+              - not_null
+          - name: cie_id
+            tests:
+              - not_null
+          - name: cie_name
+            tests:
+              - not_null
+
+      # FACT TERM
+      - name: fact_term
+        columns:
+          - name: term_id
+            tests:
+              - unique
+              - not_null
+              - not_audit_passed
+          - name: surrogated_certificate_id
+            tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: silver.dim_certificate
+                    field: surrogated_id
+          - name: term_begin_date_id
+            tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: silver.dim_term_begin_date
+                    field: term_begin_date_id
+          - name: term_end_date_id
+            tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: silver.dim_term_end_date
+                    field: term_end_date_id
+
+      # FACT CONSULTATION
+      - name: fact_consultation
+        columns:
+          - name: consultation_id
+            tests:
+              - unique
+              - not_null
+              - not_audit_passed
+          - name: surrogated_certificate_id
+            tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: silver.dim_certificate
+                    field: surrogated_id
+          - name: consultation_date_id
+            tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: silver.dim_consultation_date
+                    field: consultation_date_id
+          - name: prescription_or_medical_order
+            tests:
+              - not_null
+              - accepted_values:
+                  arguments:
+                    values: ['Ninguno', 'Orden Médica', 'Receta Médica', 'Ambos', 'Sin Especificar']
+          - name: pause_consultations
+            tests:
+              - accepted_values:
+                  arguments:
+                    values: ['Sí', 'No', 'Sin especificar']
+
+      # FACT DIAGNOSIS
+      - name: bridge_consultation_diagnosis
+        columns:
+          - name: consultation_id
+            tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: silver.fact_consultation
+                    field: consultation_id
+          - name: surrogated_cie_id
+            tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: silver.dim_cie
+                    field: surrogated_id
+
+      # FACT CLAIM
       - name: fact_claim
         columns:
           - name: claim_id
@@ -9,4 +128,51 @@ sources:
               - unique
               - not_null
               - not_audit_passed
-      - name: fact_term
+          - name: surrogated_cie_id
+            tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: silver.dim_cie
+                    field: surrogated_id
+          - name: incident_date_id
+            tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: silver.dim_incident_date
+                    field: incident_date_id
+          - name: first_expense_date_id
+            tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: silver.dim_first_expense_date
+                    field: first_expense_date_id
+          - name: payment_date_id
+            tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: silver.dim_payment_date
+                    field: payment_date_id
+          - name: month_cont_date_id
+            tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: silver.dim_month_cont_date
+                    field: month_cont_date_id
+          - name: payment_type
+            tests:
+              - not_null
+              - accepted_values:
+                  arguments:
+                    values: ['Pago Directo']
+          - name: surrogated_certificate_id
+            tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: silver.dim_certificate
+                    field: surrogated_id

@@ -1,9 +1,0 @@
-[32m2025-10-30 23:50:49 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 75e35f50-43c0-45ed-8dcf-75e93f06ea57 - 1824307 - LOGS_CAPTURED - Started capturing logs in process (pid: 1824307).
-[32m2025-10-30 23:50:49 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 75e35f50-43c0-45ed-8dcf-75e93f06ea57 - 1824307 - extract_certificates - STEP_START - Started execution of step "extract_certificates".
-INFO: Context impl SQLiteImpl.
-INFO: Will assume non-transactional DDL.
-[32m2025-10-30 23:50:50 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 75e35f50-43c0-45ed-8dcf-75e93f06ea57 - 1824307 - extract_certificates - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
-[32m2025-10-30 23:50:50 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 75e35f50-43c0-45ed-8dcf-75e93f06ea57 - extract_certificates - Writing file at: /home/armando/git/insurance_case/dagster-quickstart/.tmp_dagster_home_4q1s3t9q/storage/extract_certificates using PickledObjectFilesystemIOManager...
-[32m2025-10-30 23:50:50 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 75e35f50-43c0-45ed-8dcf-75e93f06ea57 - 1824307 - extract_certificates - ASSET_MATERIALIZATION - Materialized value extract_certificates.
-[32m2025-10-30 23:50:50 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 75e35f50-43c0-45ed-8dcf-75e93f06ea57 - 1824307 - extract_certificates - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
-[32m2025-10-30 23:50:50 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 75e35f50-43c0-45ed-8dcf-75e93f06ea57 - 1824307 - extract_certificates - STEP_SUCCESS - Finished execution of step "extract_certificates" in 130ms.

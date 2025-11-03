@@ -1,9 +1,0 @@
-[32m2025-10-31 11:35:38 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 7db49e61-544e-4047-8314-d8289a8f1556 - 2189406 - LOGS_CAPTURED - Started capturing logs in process (pid: 2189406).
-[32m2025-10-31 11:35:38 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 7db49e61-544e-4047-8314-d8289a8f1556 - 2189406 - raw_consultations_data - STEP_START - Started execution of step "raw_consultations_data".
-[32m2025-10-31 11:35:38 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 7db49e61-544e-4047-8314-d8289a8f1556 - 2189406 - raw_consultations_data - STEP_OUTPUT - Yielded output "result" of type "DataFrame". (Type check passed).
-[32m2025-10-31 11:35:38 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 7db49e61-544e-4047-8314-d8289a8f1556 - raw_consultations_data - Writing file at: /home/armando/git/insurance_case/dagster-quickstart/.tmp_dagster_home_4q1s3t9q/storage/raw_consultations_data using PickledObjectFilesystemIOManager...
-INFO: Context impl SQLiteImpl.
-INFO: Will assume non-transactional DDL.
-[32m2025-10-31 11:35:38 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 7db49e61-544e-4047-8314-d8289a8f1556 - 2189406 - raw_consultations_data - ASSET_MATERIALIZATION - Materialized value raw_consultations_data.
-[32m2025-10-31 11:35:38 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 7db49e61-544e-4047-8314-d8289a8f1556 - 2189406 - raw_consultations_data - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
-[32m2025-10-31 11:35:38 -0600[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 7db49e61-544e-4047-8314-d8289a8f1556 - 2189406 - raw_consultations_data - STEP_SUCCESS - Finished execution of step "raw_consultations_data" in 50ms.

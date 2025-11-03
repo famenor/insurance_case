@@ -1,7 +1,0 @@
-[32m2025-10-30 21:26:28 -0600[0m - dagster - [34mDEBUG[0m - init_resources - c8df3b23-73cb-4502-a236-e9014618a645 - 1595790 - LOGS_CAPTURED - Started capturing logs in process (pid: 1595790).
-[32m2025-10-30 21:26:29 -0600[0m - dagster - [34mDEBUG[0m - init_resources - c8df3b23-73cb-4502-a236-e9014618a645 - 1595790 - silver_dim_birth_date - STEP_START - Started execution of step "silver_dim_birth_date".
-INFO: Successful execution
-[32m2025-10-30 21:26:29 -0600[0m - dagster - [34mDEBUG[0m - init_resources - c8df3b23-73cb-4502-a236-e9014618a645 - 1595790 - silver_dim_birth_date - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
-[32m2025-10-30 21:26:29 -0600[0m - dagster - [34mDEBUG[0m - init_resources - c8df3b23-73cb-4502-a236-e9014618a645 - silver_dim_birth_date - Writing file at: /home/armando/git/insurance_case/dagster-quickstart/.tmp_dagster_home_4q1s3t9q/storage/c8df3b23-73cb-4502-a236-e9014618a645/silver_dim_birth_date/result using PickledObjectFilesystemIOManager...
-[32m2025-10-30 21:26:29 -0600[0m - dagster - [34mDEBUG[0m - init_resources - c8df3b23-73cb-4502-a236-e9014618a645 - 1595790 - silver_dim_birth_date - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
-[32m2025-10-30 21:26:29 -0600[0m - dagster - [34mDEBUG[0m - init_resources - c8df3b23-73cb-4502-a236-e9014618a645 - 1595790 - silver_dim_birth_date - STEP_SUCCESS - Finished execution of step "silver_dim_birth_date" in 248ms.

@@ -1,0 +1,393 @@
+[32m2025-11-02 18:26:40 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - LOGS_CAPTURED - Started capturing logs in process (pid: 3262205).
+[32m2025-11-02 18:26:40 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - STEP_START - Started execution of step "insurance_case".
+[32m2025-11-02 18:26:40 -0600[0m - dagster - [34mINFO[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - A dbt subsetted execution is not being performed. Using the default dbt selection arguments `['--select', 'fqn:*']`.
+INFO: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - A dbt subsetted execution is not being performed. Using the default dbt selection arguments `['--select', 'fqn:*']`.
+[32m2025-11-02 18:26:43 -0600[0m - dagster - [34mINFO[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Copying `/home/armando/git/insurance_case/insurance_case/target/partial_parse.msgpack` to `/home/armando/git/insurance_case/insurance_case/target/insurance_case-4496041-bfccdf1/partial_parse.msgpack` to take advantage of partial parsing.
+INFO: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Copying `/home/armando/git/insurance_case/insurance_case/target/partial_parse.msgpack` to `/home/armando/git/insurance_case/insurance_case/target/insurance_case-4496041-bfccdf1/partial_parse.msgpack` to take advantage of partial parsing.
+[32m2025-11-02 18:26:43 -0600[0m - dagster - [34mINFO[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Running dbt command: `dbt build --select fqn:*`.
+INFO: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Running dbt command: `dbt build --select fqn:*`.
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - STEP_OUTPUT - Yielded output "report_age_at_diagnosis" of type "Nothing". (Type check passed).
+INFO: Context impl SQLiteImpl.
+INFO: Will assume non-transactional DDL.
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_MATERIALIZATION - Materialized value report_age_at_diagnosis.
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - STEP_OUTPUT - Yielded output "report_customer_interaction" of type "Nothing". (Type check passed).
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_MATERIALIZATION - Materialized value report_customer_interaction.
+/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster_dbt/dagster_dbt_translator.py:762: BetaWarning: Class `LocalFileCodeReference` is currently in beta, and may have breaking changes in minor version releases, with behavior changes in patch releases.
+  LocalFileCodeReference(file_path=os.fspath(abs_path)),
+/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster_dbt/dagster_dbt_translator.py:759: BetaWarning: Class `CodeReferencesMetadataValue` is currently in beta, and may have breaking changes in minor version releases, with behavior changes in patch releases.
+  code_references=CodeReferencesMetadataValue(
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_accepted_values_silver_schema_dim_certificate_gender__M__F`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_accepted_values_silver_schema_dim_certificate_gender__M__F`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster_dbt/dagster_dbt_translator.py:762: BetaWarning: Class `LocalFileCodeReference` is currently in beta, and may have breaking changes in minor version releases, with behavior changes in patch releases.
+  LocalFileCodeReference(file_path=os.fspath(abs_path)),
+/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster_dbt/dagster_dbt_translator.py:759: BetaWarning: Class `CodeReferencesMetadataValue` is currently in beta, and may have breaking changes in minor version releases, with behavior changes in patch releases.
+  code_references=CodeReferencesMetadataValue(
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_accepted_values_silver_schema_fact_claim_payment_type__Pago_Directo`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_accepted_values_silver_schema_fact_claim_payment_type__Pago_Directo`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster_dbt/dagster_dbt_translator.py:762: BetaWarning: Class `LocalFileCodeReference` is currently in beta, and may have breaking changes in minor version releases, with behavior changes in patch releases.
+  LocalFileCodeReference(file_path=os.fspath(abs_path)),
+/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster_dbt/dagster_dbt_translator.py:759: BetaWarning: Class `CodeReferencesMetadataValue` is currently in beta, and may have breaking changes in minor version releases, with behavior changes in patch releases.
+  code_references=CodeReferencesMetadataValue(
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_accepted_values_silver_schema_fact_consultation_pause_consultations__S___No__Sin_especificar`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_accepted_values_silver_schema_fact_consultation_pause_consultations__S___No__Sin_especificar`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_accepted_values_silver_schema_fact_consultation_prescription_or_medical_order__Ninguno__Orden_M_dica__Receta_M_dica__Ambos__Sin_Especificar`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_accepted_values_silver_schema_fact_consultation_prescription_or_medical_order__Ninguno__Orden_M_dica__Receta_M_dica__Ambos__Sin_Especificar`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_audit_passed_silver_schema_fact_claim_claim_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_audit_passed_silver_schema_fact_claim_claim_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_audit_passed_silver_schema_fact_consultation_consultation_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_audit_passed_silver_schema_fact_consultation_consultation_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster_dbt/dagster_dbt_translator.py:762: BetaWarning: Class `LocalFileCodeReference` is currently in beta, and may have breaking changes in minor version releases, with behavior changes in patch releases.
+  LocalFileCodeReference(file_path=os.fspath(abs_path)),
+/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster_dbt/dagster_dbt_translator.py:759: BetaWarning: Class `CodeReferencesMetadataValue` is currently in beta, and may have breaking changes in minor version releases, with behavior changes in patch releases.
+  code_references=CodeReferencesMetadataValue(
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_audit_passed_silver_schema_fact_term_term_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_audit_passed_silver_schema_fact_term_term_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster_dbt/dagster_dbt_translator.py:762: BetaWarning: Class `LocalFileCodeReference` is currently in beta, and may have breaking changes in minor version releases, with behavior changes in patch releases.
+  LocalFileCodeReference(file_path=os.fspath(abs_path)),
+/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster_dbt/dagster_dbt_translator.py:759: BetaWarning: Class `CodeReferencesMetadataValue` is currently in beta, and may have breaking changes in minor version releases, with behavior changes in patch releases.
+  code_references=CodeReferencesMetadataValue(
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_bridge_consultation_diagnosis_consultation_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_bridge_consultation_diagnosis_consultation_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_bridge_consultation_diagnosis_surrogated_cie_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_bridge_consultation_diagnosis_surrogated_cie_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_dim_certificate_birth_date_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_dim_certificate_birth_date_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_dim_certificate_certificate_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_dim_certificate_certificate_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_dim_certificate_gender`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_dim_certificate_gender`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster_dbt/dagster_dbt_translator.py:762: BetaWarning: Class `LocalFileCodeReference` is currently in beta, and may have breaking changes in minor version releases, with behavior changes in patch releases.
+  LocalFileCodeReference(file_path=os.fspath(abs_path)),
+/home/armando/git/insurance_case/dagster-quickstart/.venv/lib/python3.12/site-packages/dagster_dbt/dagster_dbt_translator.py:759: BetaWarning: Class `CodeReferencesMetadataValue` is currently in beta, and may have breaking changes in minor version releases, with behavior changes in patch releases.
+  code_references=CodeReferencesMetadataValue(
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_dim_cie_cie_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_dim_cie_cie_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_dim_cie_cie_name`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_dim_cie_cie_name`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:45 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_dim_cie_surrogated_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_dim_cie_surrogated_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_claim_claim_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_claim_claim_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_claim_first_expense_date_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_claim_first_expense_date_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_claim_incident_date_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_claim_incident_date_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_claim_month_cont_date_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_claim_month_cont_date_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_claim_payment_date_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_claim_payment_date_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_claim_payment_type`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_claim_payment_type`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_claim_surrogated_certificate_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_claim_surrogated_certificate_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_claim_surrogated_cie_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_claim_surrogated_cie_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_consultation_consultation_date_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_consultation_consultation_date_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_consultation_consultation_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_consultation_consultation_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_consultation_prescription_or_medical_order`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_consultation_prescription_or_medical_order`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_consultation_surrogated_certificate_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_consultation_surrogated_certificate_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_term_surrogated_certificate_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_term_surrogated_certificate_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_term_term_begin_date_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_term_term_begin_date_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_term_term_end_date_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_term_term_end_date_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_term_term_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_not_null_silver_schema_fact_term_term_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_bridge_consultation_diagnosis_consultation_id__consultation_id__silver_fact_consultation`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_bridge_consultation_diagnosis_consultation_id__consultation_id__silver_fact_consultation`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_bridge_consultation_diagnosis_surrogated_cie_id__surrogated_id__silver_dim_cie`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_bridge_consultation_diagnosis_surrogated_cie_id__surrogated_id__silver_dim_cie`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_dim_certificate_birth_date_id__birth_date_id__silver_dim_birth_date`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_dim_certificate_birth_date_id__birth_date_id__silver_dim_birth_date`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_fact_claim_first_expense_date_id__first_expense_date_id__silver_dim_first_expense_date`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_fact_claim_first_expense_date_id__first_expense_date_id__silver_dim_first_expense_date`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_fact_claim_incident_date_id__incident_date_id__silver_dim_incident_date`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_fact_claim_incident_date_id__incident_date_id__silver_dim_incident_date`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_fact_claim_month_cont_date_id__month_cont_date_id__silver_dim_month_cont_date`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_fact_claim_month_cont_date_id__month_cont_date_id__silver_dim_month_cont_date`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_fact_claim_payment_date_id__payment_date_id__silver_dim_payment_date`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_fact_claim_payment_date_id__payment_date_id__silver_dim_payment_date`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_fact_claim_surrogated_certificate_id__surrogated_id__silver_dim_certificate`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_fact_claim_surrogated_certificate_id__surrogated_id__silver_dim_certificate`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_fact_claim_surrogated_cie_id__surrogated_id__silver_dim_cie`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_fact_claim_surrogated_cie_id__surrogated_id__silver_dim_cie`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_fact_consultation_consultation_date_id__consultation_date_id__silver_dim_consultation_date`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_fact_consultation_consultation_date_id__consultation_date_id__silver_dim_consultation_date`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_fact_consultation_surrogated_certificate_id__surrogated_id__silver_dim_certificate`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_fact_consultation_surrogated_certificate_id__surrogated_id__silver_dim_certificate`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_fact_term_surrogated_certificate_id__surrogated_id__silver_dim_certificate`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_fact_term_surrogated_certificate_id__surrogated_id__silver_dim_certificate`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_fact_term_term_begin_date_id__term_begin_date_id__silver_dim_term_begin_date`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_fact_term_term_begin_date_id__term_begin_date_id__silver_dim_term_begin_date`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_fact_term_term_end_date_id__term_end_date_id__silver_dim_term_end_date`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_relationships_silver_schema_fact_term_term_end_date_id__term_end_date_id__silver_dim_term_end_date`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_unique_silver_schema_dim_certificate_certificate_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_unique_silver_schema_dim_certificate_certificate_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_unique_silver_schema_dim_cie_surrogated_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_unique_silver_schema_dim_cie_surrogated_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_unique_silver_schema_fact_claim_claim_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_unique_silver_schema_fact_claim_claim_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:46 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_unique_silver_schema_fact_consultation_consultation_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_unique_silver_schema_fact_consultation_consultation_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:47 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:47 -0600[0m - dagster - [34mWARNING[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_unique_silver_schema_fact_term_term_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+WARNING: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Logging an `AssetObservation` instead of an `AssetCheckResult` for dbt test `source_unique_silver_schema_fact_term_term_id`.
+
+This test was not included in Dagster's asset check selection, and was likely executed due to dbt indirect selection.
+[32m2025-11-02 18:26:47 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_OBSERVATION - DagsterEventType.ASSET_OBSERVATION for step insurance_case
+[32m2025-11-02 18:26:47 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - STEP_OUTPUT - Yielded output "report_age_at_diagnosis_assert_order" of type "Any". (Type check passed).
+[32m2025-11-02 18:26:47 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - ASSET_CHECK_EVALUATION - Asset check 'assert_order' on 'report_age_at_diagnosis' passed.
+[32m2025-11-02 18:26:47 -0600[0m - dagster - [34mINFO[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Finished dbt command: `dbt build --select fqn:*`.
+INFO: generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - insurance_case - Finished dbt command: `dbt build --select fqn:*`.
+[32m2025-11-02 18:26:47 -0600[0m - dagster - [34mDEBUG[0m - generate_gold_tables - 44960410-d680-497b-96c2-5aa671d037a3 - 3262205 - insurance_case - STEP_SUCCESS - Finished execution of step "insurance_case" in 6.52s.
