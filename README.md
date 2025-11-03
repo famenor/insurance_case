@@ -525,7 +525,7 @@ la cual está disponible en el enlace https://github.com/famenor/insurance_case/
 
 En la carpeta dagster-quickstart se encuentran los archivos generados por Dagster, entre los archivos a destacar estan:
 
-- assets_init_db.py contiene los pasos necesarios para inicializar los esquemas de la base de datos, así como las tablas especiales de gobernanza y dimensiones de fechas. Todos estos pasos se ejecutarán mediante un solo job:
+- assets_init_db.py contiene los pasos necesarios para inicializar los esquemas de la base de datos, así como las tablas especiales de gobernanza y dimensiones de fechas. Todos estos pasos se ejecutan mediante el siguiente job:
 
 ~~~python
 # JOB FOR INIT DB
@@ -546,7 +546,7 @@ def init_resources():
     generate_fact_error_event_detail()
 ~~~
 
-- assets_raw_preprocessing.py contiene las lecturas de las cinco tablas originales, así como los dos preprocesamientos para generar los archivos de consultas y diagnóstivos. Todos estos pasos se ejecutarán mediante un solo job:
+- assets_raw_preprocessing.py contiene las lecturas de las cinco tablas originales, así como los dos preprocesamientos para generar los archivos de consultas y diagnóstivos. Todos estos pasos se ejecutan mediante el siguiente job:
 
 ~~~python
 @dg.job
@@ -560,7 +560,7 @@ def extract_raw_data():
     parsed_diagnoses = parse_consultations_diagnosis_data(raw_consultations)
 ~~~
 
-- assets_silver.py contiene los procesos para generar las tablas de nivel bronce, plata y oro. En el caso de las tablas de bronce y plata (generadas mediante procesos en Python), se generan ordenadamente mediante el siguiente job:
+- assets_silver.py contiene los procesos para generar las tablas de nivel bronce, plata y oro. En el caso de las tablas de bronce y plata, estas tablas se generan mediante procesos en Python, los cuales se ejecutan ordenadamente mediante el siguiente job:
 
 ~~~python
 ## JOB FOR BRONZE AND SILVER TABLES
@@ -586,7 +586,7 @@ def generate_insurance_tables():
     load_claim_consultation(br_claim)
 ~~~
 
-para las tablas oro (generadas mediante procesos en DBT) se utiliza otro job:
+para las tablas oro que se generan mediante DBT, se utiliza otro job:
 
 ~~~python
 ## JOB FOR GOLD TABLES
@@ -620,13 +620,17 @@ Contiene los archivos generados por DBT y los modelos para generar las tablas or
 
 ![](https://github.com/famenor/insurance_case/blob/main/pictures/repositorio_03.jpg)
 
-Se incluyen pruebas de datos para validar que los insumos se hayan generado correctamente, por ejemplo, a continuación se muestra una prueba para validar que todos los registros de las tablas de hechos a nivel plata hayan cumplido con la auditoria:
+Se incluyen pruebas de datos para validar que los insumos se hayan generado correctamente, a continuación se muestra una prueba para validar que todos los registros de las tablas de hechos a nivel plata hayan cumplido con la auditoria:
 
 ![](https://github.com/famenor/insurance_case/blob/v0.0.2/pictures/dbt_tests_01.jpg)
 
-Un ejemplo de como se ejecutan todas las pruebas de DBT:
+Igualmente se implementaron pruebas de unicidad, valores no nulos, valores permitidos de lista y llaves foraneas:
 
 ![](https://github.com/famenor/insurance_case/blob/v0.0.2/pictures/dbt_tests_02.jpg)
+
+En la siguiente imagen se puede apreciar la ejecución de las pruebas en DBT:
+
+![](https://github.com/famenor/insurance_case/blob/v0.0.2/pictures/dbt_tests_03.jpg)
 
 ## Otros archivos
 
@@ -645,6 +649,7 @@ Hasta antes de realizar esta prueba, no había utilizado Dagster ni Duckdb; con 
 - Los campos de texto capturado son muy importantes en el sector médico, sí es importante incorporar módulos para el analisis inteligente de texto y extracción de rasgos.
 - El catálogo del CIE parece tener diferenctes versiones o formatos, algunas de las patologías no pudieron ser asociadas por mínimas discrepancias en los códigos CIE.
 - Incorporar pruebas unitarias y pruebas de validación de datos para las tablas oro.
+
 
 
 
